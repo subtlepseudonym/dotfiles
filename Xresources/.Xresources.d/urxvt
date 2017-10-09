@@ -1,0 +1,98 @@
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
+ 
+URxvt.depth: 32
+URxvt.geometry: 80x24
+URxvt.transparent: false
+URxvt.fading: 0
+! URxvt.urgentOnBell: true
+! URxvt.visualBell: true
+URxvt.loginShell: true
+URxvt.saveLines: 5000
+URxvt.internalBorder: 3
+URxvt.lineSpace: 0
+ 
+! Fonts
+URxvt.allow_bold: false
+/* URxvt.font: -*-terminus-medium-r-normal-*-12-120-72-72-c-60-iso8859-1 */
+URxvt*font: xft:Hack:pixelsize=12
+URxvt*boldFont: xft:Hack:pixelsize=12
+ 
+! Fix font space
+URxvt*letterSpace: -1
+ 
+! Scrollbar
+URxvt.scrollStyle: rxvt
+URxvt.scrollBar: false
+ 
+! Perl extensions
+URxvt.perl-ext-common: default,matcher,tabbed
+URxvt.matcher.button: 1
+URxvt.urlLauncher: chromium
+ 
+! Cursor
+URxvt.cursorBlink: true
+URxvt.cursorColor: #657b83
+URxvt.cursorUnderline: false
+ 
+! Pointer
+URxvt.pointerBlank: true
+
+!URxvt*background:   #151515
+!URxvt*foreground:   #c6a57b
+!URxvt*color0:       #8d4a4a
+!URxvt*color8:       #8d4a4a
+!URxvt*color1:       #953331
+!URxvt*color9:       #953331
+!URxvt*color2:       #546a29
+!URxvt*color10:      #546a29
+!URxvt*color3:       #546a29
+!URxvt*color11:      #546a29
+!URxvt*color4:       #5c737c
+!URxvt*color12:      #5c737c
+!URxvt*color5:       #385e6b
+!URxvt*color13:      #385e6b
+!URxvt*color6:       #7e9960
+!URxvt*color14:      #7e9960
+!URxvt*color7:       #7e9960
+!URxvt*color15:      #7e9960
+
+! special
+URxvt*.foreground:   #e8d2b6
+URxvt*.background:   #151515
+URxvt*.cursorColor:  #e8d2b6
+
+! black
+URxvt*.color0:       #282a2e
+URxvt*.color8:       #373b41
+
+! red
+URxvt*.color1:       #953331
+URxvt*.color9:       #953331
+
+! green
+URxvt*.color2:       #324c00
+URxvt*.color10:      #50730e
+
+! yellow
+URxvt*.color3:       #008ec8
+URxvt*.color11:      #4b9aba
+
+! blue
+URxvt*.color4:       #5c737c
+URxvt*.color12:      #5c737c
+
+! magenta
+URxvt*.color5:       #8d6d17
+URxvt*.color13:      #b89539
+
+! cyan
+URxvt*.color6:       #7e9960
+URxvt*.color14:      #7e9960
+
+! white
+URxvt*.color7:       #7e9960
+URxvt*.color15:      #7e9960
