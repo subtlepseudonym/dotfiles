@@ -10,8 +10,8 @@ function git_current_tag() {
 # Outputs the number of commits ahead of the latest tag
 function git_commits_ahead_of_tag() {
 	local ref
-	ref=$(command git describe --long 2> /dev/null)
+	ref=$(command git describe --tags --long 2> /dev/null)
 	local ret=$?
 	[[ $ret != 0 ]] && return
-	echo $(echo $ref | cut -f 2 -d "-")
+	echo $(echo $ref | rev | cut -f 2 -d "-" | rev)
 }
