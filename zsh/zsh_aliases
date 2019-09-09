@@ -1,0 +1,9 @@
+# Navigation
+alias la='ls -a'
+alias ll='ls -la'
+alias lh='ls -lah'
+
+# Text Processing
+alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
+alias jq-prune="jq -R -r 'try fromjson'"
+alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"

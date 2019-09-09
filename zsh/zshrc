@@ -4,14 +4,10 @@ autoload -Uz compinit
 compinit
 
 [[ -f $HOME/.zsh_aliases ]] && . $HOME/.zsh_aliases
-
 [[ -f /usr/share/nvm/init-nvm.sh ]] && . /usr/share/nvm/init-nvm.sh
 
-export ZSH=/home/loki/.oh-my-zsh
-
-ZSH_THEME="loki"
-
 # zsh options
+ZSH_THEME="loki"
 HYPHEN_INSENSITIVE="true"
 
 # omz plugins

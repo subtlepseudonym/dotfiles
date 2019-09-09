@@ -1,8 +1,7 @@
 # Mostly env vars
 export TERMINAL=/usr/bin/urxvt
 export VISUAL=/usr/bin/vim
-export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export USR_SCRIPTS=$HOME/workspace/scripts
 
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$USR_SCRIPTS
+export PATH=$PATH:$GOPATH/bin:$USR_SCRIPTS
