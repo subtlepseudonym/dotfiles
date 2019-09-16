@@ -16,5 +16,5 @@ plugins=(
 
 source "${ZSH}/oh-my-zsh.sh"
 
-[[ -f "${HOME}/.zsh_aliases" ]] && . "${HOME}/.zsh_aliases"
+[[ -f "${ZDOTDIR}/.zsh_aliases" ]] && . "${ZDOTDIR}/.zsh_aliases"
 [[ -f /usr/share/nvm/init-nvm.sh ]] && . /usr/share/nvm/init-nvm.sh

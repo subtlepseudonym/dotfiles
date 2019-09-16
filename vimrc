@@ -15,7 +15,6 @@ set noerrorbells " disable beep on error
 set novisualbell " disable screen flashing on errors
 set t_vb= " blank command for visual bell
 set title " set window title to reflect file be edited
-colorscheme evening
 
 " Search
 set ignorecase " case insensitive search
