@@ -1,7 +1,13 @@
-# Navigation
+# Files
+alias ls='ls --color'
 alias la='ls -a'
 alias ll='ls -la'
 alias lh='ls -lah'
+alias rga="rg --files --hidden"
+
+alias activate2.7='source /Users/cdemille/workspace/venvs/2.7/bin/activate'
+alias activate3.7='source /Users/cdemille/workspace/venvs/3.7/bin/activate'
+alias dcjs="deploy_customjs -e production"
 
 # Text Processing
 alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"

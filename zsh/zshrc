@@ -1,16 +1,20 @@
-# Stuff from old .zshrc
-zstyle :compinstall filename '/home/loki/.zshrc'
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+zstyle :compinstall filename "${ZDOTDIR}/.zshrc"
+
 autoload -Uz compinit
 compinit
 
-[[ -f $HOME/.zsh_aliases ]] && . $HOME/.zsh_aliases
-[[ -f /usr/share/nvm/init-nvm.sh ]] && . /usr/share/nvm/init-nvm.sh
-
-# zsh options
+export ZSH="${HOME}/.oh-my-zsh"
 ZSH_THEME="loki"
 HYPHEN_INSENSITIVE="true"
 
-# omz plugins
-plugins=(git)
+plugins=(
+	git
+	zsh-nvm
+)
 
-source $ZSH/oh-my-zsh.sh
+source "${ZSH}/oh-my-zsh.sh"
+
+[[ -f "${HOME}/.zsh_aliases" ]] && . "${HOME}/.zsh_aliases"
+[[ -f /usr/share/nvm/init-nvm.sh ]] && . /usr/share/nvm/init-nvm.sh
