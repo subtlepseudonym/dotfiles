@@ -5,9 +5,6 @@ alias ll='ls -la'
 alias lh='ls -lah'
 alias rga="rg --files --hidden"
 
-alias activate2.7='source /Users/cdemille/workspace/venvs/2.7/bin/activate'
-alias activate3.7='source /Users/cdemille/workspace/venvs/3.7/bin/activate'
-alias dcjs="deploy_customjs -e production"
 alias dcc="docker-cleanup-containers.sh"
 alias dci="docker-cleanup-images.sh"
 
