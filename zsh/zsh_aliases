@@ -14,5 +14,6 @@ alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
 alias jq-prune="jq -R -r 'try fromjson'"
 alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
 alias swaplist="rg --files ~/.vim_runtime/tmp/swpdir | rev | cut -f1 -d/ | rev | sed 's#%#/#g'"
+alias sl=swaplist
 alias udate="date +%s"
 alias pubip="curl 'https://api.ipify.org'"
