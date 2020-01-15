@@ -5,16 +5,49 @@ zstyle :compinstall filename "${ZDOTDIR}/.zshrc"
 autoload -Uz compinit
 compinit
 
-export ZSH="${HOME}/.oh-my-zsh"
-ZSH_THEME="loki"
-HYPHEN_INSENSITIVE="true"
+if [[ -d "${HOME}/.oh-my-zsh" ]]; then
+	export ZSH="${HOME}/.oh-my-zsh"
+	ZSH_THEME="loki"
+	HYPHEN_INSENSITIVE="true"
 
-plugins=(
-	git
-	zsh-nvm
+	plugins=(
+		git
+		zsh-nvm
+	)
+
+	source "${ZSH}/oh-my-zsh.sh"
+fi
+
+workspace="${HOME}/workspace"
+export path=(
+	"${workspace}/bin"
+	"${workspace}/scripts"
+	"${GOPATH}/bin"
+	"${path[@]}"
+	"${SCALA_BIN}"
+	"${SPARK_BIN}"
 )
 
-source "${ZSH}/oh-my-zsh.sh"
+export VISUAL="/usr/bin/vim"
+export EDITOR="/usr/bin/vim"
 
-[[ -f "${ZDOTDIR}/.zsh_aliases" ]] && . "${ZDOTDIR}/.zsh_aliases"
-[[ -f /usr/share/nvm/init-nvm.sh ]] && . /usr/share/nvm/init-nvm.sh
+export GOPATH="${HOME}/go"
+export GOPRIVATE="github.com/movableink"
+
+export NVM_DIR="${HOME}/.nvm"
+export NVM_LAZY_LOAD=true
+
+export JAVA_HOME="$(/usr/libexec/java_home)"
+export SCALA_BIN="/usr/local/opt/scala@2.11/bin"
+export SPARK_BIN="${HOME}/apps/spark-2.2.1/bin"
+
+conditional_sources=(
+	"${ZDOTDIR}/.zsh_credentials"
+	"${ZDOTDIR}/.zsh_aliases"
+	"/usr/share/nvm/init-nvm.sh"
+	"${HOME}/.rvm/scripts/rvm" # must be at the end of this list
+)
+
+for src in "${conditional_sources}"; do
+	[[ -f "${src}" ]] && source "${src}"
+done
