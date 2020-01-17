@@ -39,12 +39,12 @@ filetype indent on " load indent file based upon file type
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 
-" Store runtime files in ~/.vim_runtime
+" Store runtime files in ~/.vim
 try
-    set viminfo+=n~/.vim_runtime/.viminfo
-    set backupdir=~/.vim_runtime/tmp/backupdir//
-    set directory=~/.vim_runtime/tmp/swpdir//
-    set undodir=~/.vim_runtime/tmp/undodir//
+    set viminfo+=n~/.vim/.viminfo
+    set backupdir=~/.vim/tmp/backupdir//
+    set directory=~/.vim/tmp/swpdir//
+    set undodir=~/.vim/tmp/undodir//
     set undofile
 catch
 endtry
