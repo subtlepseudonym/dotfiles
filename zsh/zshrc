@@ -12,7 +12,6 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
 
 	plugins=(
 		git
-		zsh-nvm
 	)
 
 	source "${ZSH}/oh-my-zsh.sh"
@@ -48,6 +47,6 @@ conditional_sources=(
 	"${HOME}/.rvm/scripts/rvm" # must be at the end of this list
 )
 
-for src in "${conditional_sources}"; do
+for src in ${conditional_sources}; do
 	[[ -f "${src}" ]] && source "${src}"
 done
