@@ -1,6 +1,30 @@
+# default environment
+export DOTFILES="${HOME}/.dotfiles"
+export ZSH="${DOTFILES}/zsh"
+export ZDOTDIR="${DOTFILES}/zsh"
+
+# load config files
+for file in ($ZSH/**/*.zsh)
+do
+	source "${file}"
+done
+
+# local environment variables / secrets
+if [[ -a "${HOME}/.localrc" ]]; then
+	source "${HOME}/.localrc"
+fi
+
+workspace="${HOME}/workspace"
+export path=(
+	"${workspace}/bin"
+	"${workspace}/script"
+	"${path[@]}"
+)
+
+# default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
-zstyle :compinstall filename "${ZDOTDIR}/.zshrc"
+zstyle :compinstall filename "${HOME}/.zshrc"
 
 autoload -Uz compinit
 compinit
@@ -17,28 +41,9 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
 	source "${ZSH}/oh-my-zsh.sh"
 fi
 
-export VISUAL="/usr/bin/vim"
-export EDITOR="/usr/bin/vim"
-
-export GOPATH="${HOME}/go"
-export GOPRIVATE="github.com/movableink"
-
-export NVM_DIR="${HOME}/.nvm"
-export NVM_LAZY_LOAD=true
-
 export JAVA_HOME="$(/usr/libexec/java_home)"
 export SCALA_BIN="/usr/local/opt/scala@2.11/bin"
 export SPARK_BIN="${HOME}/apps/spark-2.2.1/bin"
-
-workspace="${HOME}/workspace"
-export path=(
-	"${workspace}/bin"
-	"${workspace}/scripts"
-	"${GOPATH}/bin"
-	"${path[@]}"
-	"${SCALA_BIN}"
-	"${SPARK_BIN}"
-)
 
 conditional_sources=(
 	"${ZDOTDIR}/.zsh_credentials"

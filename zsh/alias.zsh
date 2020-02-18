@@ -6,8 +6,8 @@ alias lh='ls -lah'
 alias rga="rg --files --hidden"
 
 # Shortened commands
-alias dcc="docker-cleanup-containers.sh"
-alias dci="docker-cleanup-images.sh"
+alias dcc="docker-prune-containers"
+alias dci="docker-prune-images"
 
 # Micro-scripts
 alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"

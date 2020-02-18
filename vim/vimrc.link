@@ -18,6 +18,7 @@ set title " set window title to reflect file be edited
 
 " Search
 set ignorecase " case insensitive search
+set wildignorecase " case insensitive filename search
 set hlsearch " hightlight search items
 set incsearch " match partial hits with incremental search
 
