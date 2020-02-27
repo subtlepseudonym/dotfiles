@@ -36,7 +36,8 @@ install_workspace () {
 		"${HOME}/.vim/tmp/swpdir" \
 		"${HOME}/.vim/tmp/undodir" \
 
-	rsync -amrv \ # archive, ignore empty, recursive, vebose
+	# archive, ignore empty dirs, recursive, verbose
+	rsync -amrv \
 		--include="*.zsh" \
 		--include="*.link" \
 		--include="*/" \
