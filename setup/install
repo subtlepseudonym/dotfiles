@@ -23,12 +23,6 @@ error () {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
 }
 
-get_theme () {
-	mkdir -vp "${dotfiles_root}/themes"
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${dotfiles_root}/themes/loki.zsh-theme"
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${dotfiles_root}/zsh/git-patch.zsh"
-}
-
 install_workspace () {
 	mkdir -vp \
 		"${workspace}/bin" \
@@ -42,6 +36,10 @@ install_workspace () {
 		"${HOME}/.vim/tmp/swpdir" \
 		"${HOME}/.vim/tmp/undodir" \
 
+	success "installed workspace"
+}
+
+install_dotfiles () {
 	# archive, ignore empty dirs, recursive, verbose
 	rsync -amrv \
 		--include="*.zsh" \
@@ -51,7 +49,16 @@ install_workspace () {
 		--exclude="*" \
 		"${dotfiles_root}/" "${home_dotfiles}"
 
-	success "installed workspace"
+	success "installed dotfiles"
+}
+
+get_theme () {
+	mkdir -vp "${home_dotfiles}/themes"
+
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${home_dotfiles}/themes/loki.zsh-theme"
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/zsh/git-patch.zsh"
+
+	success "installed theme"
 }
 
 link_file () {
@@ -158,7 +165,8 @@ install_scripts () {
 	done
 }
 
-get_theme
 install_workspace
+install_dotfiles
+get_theme
 install_links
 install_scripts
