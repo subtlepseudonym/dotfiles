@@ -39,7 +39,7 @@ install_workspace () {
 		"${HOME}/.vim/tmp/swpdir" \
 		"${HOME}/.vim/tmp/undodir" 1>> $log 2>&1
 
-	if [ $? == 0]; then
+	if [ $? == 0 ]; then
 		success "installed workspace"
 	else
 		error "could not install workspace, check $log"
@@ -56,7 +56,7 @@ install_dotfiles () {
 		--exclude="*" \
 		"${dotfiles_root}/" "${home_dotfiles}" 1>> $log 2>&1
 
-	if [ $? == 0]; then
+	if [ $? == 0 ]; then
 		success "installed dotfiles"
 	else
 		error "could not install dotfiles, check $log"
@@ -76,7 +76,7 @@ get_theme () {
 	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/zsh/git-patch.zsh" 1>> $log 2>&1
 	ret=$(( $ret | $? ))
 
-	if [ $? == 0]; then
+	if [ $? == 0 ]; then
 		success "installed theme"
 	else
 		error "could not install theme, check $log"
