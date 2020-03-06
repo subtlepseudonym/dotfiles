@@ -30,5 +30,5 @@ autoload -Uz compinit
 compinit
 
 export THEME="${THEME:-loki}"
-theme_file="${ZSH}/themes/${THEME}.zsh-theme"
-[ -f "${theme_file}" ] && source "${ZSH}/themes/${THEME}.zsh-theme"
+theme_file="${DOTFILES}/themes/${THEME}.zsh-theme"
+[ -f "${theme_file}" ] && source "${DOTFILES}/themes/${THEME}.zsh-theme"
