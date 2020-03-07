@@ -1,7 +1,5 @@
 # default environment
 export DOTFILES="${HOME}/.dotfiles"
-export ZSH="${DOTFILES}/zsh"
-export ZDOTDIR="${DOTFILES}/zsh"
 
 # load config files
 for file in $DOTFILES/**/(*).zsh
