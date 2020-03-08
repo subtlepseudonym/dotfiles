@@ -182,7 +182,7 @@ install_links () {
 install_scripts () {
 	if [[ "$(uname -s)" != "Darwin" ]]; then
 		exclude_modules+="macos"
-		info "$(printf "excluding macos scripts for uname value %s" $(uname -s))"
+		info "$(printf "excluding macos scripts for uname value '%s'" $(uname -s))"
 	fi
 
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude_modules}) -false \) -prune -o -name '*.script' -print)
