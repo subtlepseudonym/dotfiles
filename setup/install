@@ -185,7 +185,7 @@ install_scripts () {
 		info "$(printf "excluding macos scripts for uname value %s" $(uname -s))"
 	fi
 
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf "-path */%s -o " ${exclude_modules}) -false \) -prune -o -name '*.script' -print)
+	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude_modules}) -false \) -prune -o -name '*.script' -print)
 	do
 		dst="${workspace}/script/$(basename "${src%.script}")"
 		cp "${src}" "${dst}"
