@@ -20,6 +20,10 @@ export path=(
 	"${path[@]}"
 )
 
+# bind zsh-history-substring-search functions to arrow keys
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
