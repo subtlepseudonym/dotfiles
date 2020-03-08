@@ -12,6 +12,7 @@ if [[ -a "${HOME}/.localrc" ]]; then
 	source "${HOME}/.localrc"
 fi
 
+# add user binaries and scripts to path
 workspace="${HOME}/workspace"
 export path=(
 	"${workspace}/bin"
@@ -27,10 +28,12 @@ zstyle :compinstall filename "${HOME}/.zshrc"
 autoload -Uz compinit
 compinit
 
+# fix terminal colors for raspis
 if [[ "${TERM}" == "xterm" ]]; then
 	export TERM="xterm-256color"
 fi
 
+# attempt to apply zsh theme
 export THEME="${THEME:-loki}"
 theme_file="${DOTFILES}/themes/${THEME}.zsh-theme"
 [ -f "${theme_file}" ] && source "${DOTFILES}/themes/${THEME}.zsh-theme"
