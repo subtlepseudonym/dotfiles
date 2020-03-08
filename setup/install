@@ -10,10 +10,10 @@ home_dotfiles="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
 
 modules=(
-	$(basename --multiple $(
-		find "${working_dir}" \
+	$(basename --multiple \
+		$(find "${working_dir}" \
 			\( $(printf -- "-path */%s -o " ".git" "setup" "zsh") -false \) \
-		-prune -o -type d ! -path "${working_dir}" -print
+		-prune -o -type d ! -path "${working_dir}" -print)
 	)
 )
 exclude_modules=('*.git*')
