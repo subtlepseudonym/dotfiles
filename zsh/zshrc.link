@@ -21,8 +21,13 @@ export path=(
 )
 
 # bind zsh-history-substring-search functions to arrow keys
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+if [[ -z "$terminfo" ]]; then
+	bindkey '^[[A' history-substring-search-up
+	bindkey '^[[B' history-substring-search-down
+else
+	bindkey "${terminfo[kcuu1]}" history-substring-search-up
+	bindkey "${terminfo[kcud1]}" history-substring-search-down
+fi
 
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
