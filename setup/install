@@ -2,10 +2,21 @@
 # Credit for link_file goes to Zach Holman
 # https://github.com/holman/dotfiles/blob/master/script/bootstrap
 
-cd "$(dirname "${0}")/.."
+working_dir="$(dirname "${0}")/.."
+cd "${working_dir}"
+
 dotfiles_root="$(pwd -P)"
 home_dotfiles="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
+
+modules=(
+	$(basename --multiple $(
+		find "${working_dir}" \( \
+			$(printf -- "-path */%s -o " ".git" "setup" "zsh") -false \
+		\) -prune -o -type d ! -path "${working_dir}" -print
+	)
+)
+exclude_modules=('*.git*')
 
 log="${HOME}/dotfile_install.log"
 > $log
@@ -161,7 +172,7 @@ link_file () {
 install_links () {
 	local overwrite_all=false backup_all=false skip_all=false
 
-	for src in $(find -H "${home_dotfiles}" -maxdepth 2 -name '*.link' -not -path '*.git*')
+	for src in $(find -H "${home_dotfiles}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude_modules}) -false \) -prune -o -name '*.link' -print)
 	do
 		dst="${HOME}/.$(basename "${src%.*}")"
 		link_file "${src}" "${dst}"
@@ -169,13 +180,12 @@ install_links () {
 }
 
 install_scripts () {
-	local exclude_mac=""
 	if [[ "$(uname -s)" != "Darwin" ]]; then
-		exclude_mac="*/macos/*"
-		info "excluding macos scripts"
+		exclude_modules+="macos"
+		info "$(printf "excluding macos scripts for uname value %s" $(uname -s))"
 	fi
 
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 -name '*.script' -not -path '*.git*' -not -path "${exclude_mac}")
+	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf "-path */%s -o " ${exclude_modules}) -false \) -prune -o -name '*.script' -print)
 	do
 		dst="${workspace}/script/$(basename "${src%.script}")"
 		cp "${src}" "${dst}"
