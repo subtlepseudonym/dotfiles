@@ -28,6 +28,8 @@ else
 	bindkey "${terminfo[kcuu1]}" history-substring-search-up
 	bindkey "${terminfo[kcud1]}" history-substring-search-down
 fi
+unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
+unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
 
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
