@@ -29,6 +29,20 @@ error () {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
 }
 
+parse_exclusions () {
+	zparseopts -D -E -- \
+		x+:=exclude_opts \
+		-exclude+:=exclude_opts
+
+	exclude_opts=("${exclude_opts[@]:#-x}")
+	exclude_opts=("${exclude_opts[@]:#--exclude}")
+
+	exclude+=${exclude_opts[@]}
+}
+
+# parse excluded modules before using value of $exclude
+parse_exclusions
+
 install_workspace () {
 	mkdir -vp \
 		"${workspace}/bin" \
@@ -189,17 +203,6 @@ install_scripts () {
 	done
 }
 
-parse_exclusions () {
-	zparseopts -D -E -- \
-		x+:=exclude_opts \
-		-exclude+:=exclude_opts
-
-	exclude_opts=("${exclude_opts[@]:#-x}")
-	exclude_opts=("${exclude_opts[@]:#--exclude}")
-
-	exclude+=${exclude_opts[@]}
-}
-
 list_modules () {
 	df_modules=(
 		$(basename --multiple \
@@ -228,9 +231,7 @@ list_modules () {
 	esac
 }
 
-parse_exclusions
 list_modules || exit
-
 : > $logfile
 
 install_workspace
