@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+#
 # Credit for link_file goes to Zach Holman
 # https://github.com/holman/dotfiles/blob/master/script/bootstrap
 
@@ -196,6 +197,36 @@ install_scripts () {
 		fi
 	done
 }
+
+parse_exclusions () {
+	zparseopts -D -E -- \
+		x:=exclude_opts \
+		-exclude:=exclude_opts
+
+	exclude+="${exclude_opts[@]:#-x}"
+	exclude+="${exclude_opts[@]:#--exclude}"
+}
+
+list_modules () {
+	info "The following modules will be installed:"
+	for module in $df_modules; do
+		info "\t$module"
+	done
+	info "( Use --exclude to remove modules from this list )"
+
+	user "Continue? [Yn]"
+	read -n1 action
+
+	case "$action" in
+		n )
+			exit;;
+		* )
+			;;
+	esac
+}
+
+parse_exclusions
+list_modules
 
 install_workspace
 install_dotfiles
