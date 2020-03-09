@@ -36,6 +36,11 @@ error () {
 }
 
 install_workspace () {
+	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
+		info "skipping workspace installation"
+		return
+	fi
+
 	mkdir -vp \
 		"${workspace}/bin" \
 		"${workspace}/doc" \
@@ -43,15 +48,28 @@ install_workspace () {
 		"${workspace}/manifest" \
 		"${workspace}/sandbox" \
 		"${workspace}/script" \
-		"${workspace}/volume" \
-		"${HOME}/.vim/tmp/backupdir" \
-		"${HOME}/.vim/tmp/swpdir" \
-		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+		"${workspace}/volume" 1>> $logfile 2>&1
 
 	if [[ $? == 0 ]]; then
 		success "installed workspace"
 	else
 		error "could not install workspace, check $logfile"
+	fi
+}
+
+install_vim_dir () {
+	# skip if vim module is excluded
+	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
+
+	mkdir -vp \
+		"${HOME}/.vim/tmp/backupdir" \
+		"${HOME}/.vim/tmp/swpdir" \
+		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+
+	if [[ $? == 0 ]]; then
+		success "installed .vim directory"
+	else
+		error "could not install .vim directory, check $logfile"
 	fi
 }
 
@@ -195,13 +213,12 @@ install_scripts () {
 }
 
 list_modules () {
-	df_modules=(
-		$(basename --a \
-			$(find "${dotfiles_root}" \
-				\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
-			-prune -o -type d ! -path "${dotfiles_root}" -print)
-		)
-	)
+	df_modules=("workspace")
+	df_modules+=($(basename --a \
+		$(find "${dotfiles_root}" \
+			\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
+		-prune -o -type d ! -path "${dotfiles_root}" -print)
+	))
 
 	info "The following modules will be installed:"
 	info
@@ -226,6 +243,7 @@ list_modules || exit
 : > $logfile
 
 install_workspace
+install_vim_dir
 install_dotfiles
 get_theme
 install_links
