@@ -3,8 +3,7 @@
 # Credit for link_file goes to Zach Holman
 # https://github.com/holman/dotfiles/blob/master/script/bootstrap
 
-working_dir="$(dirname "${0}")/.."
-cd "${working_dir}"
+cd "$(dirname "${0}")/.."
 
 dotfiles_root="$(pwd -P)"
 home_dotfiles="${HOME}/.dotfiles"
@@ -198,9 +197,9 @@ install_scripts () {
 list_modules () {
 	df_modules=(
 		$(basename --multiple \
-			$(find "${working_dir}" \
+			$(find "${dotfiles_root}" \
 				\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
-			-prune -o -type d ! -path "${working_dir}" -print)
+			-prune -o -type d ! -path "${dotfiles_root}" -print)
 		)
 	)
 
