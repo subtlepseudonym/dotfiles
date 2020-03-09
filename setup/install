@@ -196,7 +196,7 @@ install_scripts () {
 
 list_modules () {
 	df_modules=(
-		$(basename --multiple \
+		$(basename --a \
 			$(find "${dotfiles_root}" \
 				\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
 			-prune -o -type d ! -path "${dotfiles_root}" -print)
