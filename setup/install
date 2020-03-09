@@ -11,13 +11,6 @@ home_dotfiles="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
 
 exclude=('*.git*')
-df_modules=(
-	$(basename --multiple \
-		$(find "${working_dir}" \
-			\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
-		-prune -o -type d ! -path "${working_dir}" -print)
-	)
-)
 
 log="${HOME}/dotfile_install.log"
 : > $log
@@ -208,6 +201,14 @@ parse_exclusions () {
 }
 
 list_modules () {
+	df_modules=(
+		$(basename --multiple \
+			$(find "${working_dir}" \
+				\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
+			-prune -o -type d ! -path "${working_dir}" -print)
+		)
+	)
+
 	info "The following modules will be installed:"
 	for module in $df_modules; do
 		info "\t$module"
