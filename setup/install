@@ -20,7 +20,7 @@ df_modules=(
 )
 
 log="${HOME}/dotfile_install.log"
-> $log
+: > $log
 
 info () {
 	printf "\r	[ \033[00;34m..\033[0m ] $1\n"
@@ -215,7 +215,7 @@ list_modules () {
 	info "( Use --exclude to remove modules from this list )"
 
 	user "Continue? [Yn]"
-	read -n1 action
+	read -n 1 action
 
 	case "$action" in
 		n )
