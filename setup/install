@@ -1,7 +1,4 @@
 #!/usr/bin/env zsh
-#
-# Credit for link_file goes to Zach Holman
-# https://github.com/holman/dotfiles/blob/master/script/bootstrap
 
 cd "$(dirname "${0}")/.."
 

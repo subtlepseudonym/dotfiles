@@ -1,5 +1,28 @@
-## Custom files for various environments
+## Dotfiles
 
-I'll try to keep these files up to date, but mostly likely I'll place them here when they're first created and only update them seldomly.
+This project structure is loosely based upon [Zach Holman's dotfiles](https://github.com/holman/dotfiles/).
 
-Just a quick note on the off chance someone else is browsing through here -- the Xresources (at least for urxvt) sets some colors that completely disregard their name (magenta comes out yellow). :)
+### Assumptions
+These dotfiles are designed to be used with zsh; there are no bash config files and the installation script
+uses the `/usr/bin/env zsh` interpreter directive. The install script 
+
+### Installation
+Clone this repository and install by running script at `./setup/install`. The script does make the assumption
+that the entire repo is available to it, so it may work without having cloned everything, but no guarantees.
+This repo is organized into modules, defined by the directories located at project root. During install, modules
+can be excluded by using the `--exclude` or `-x` flag followed by the module you wish to exclude.
+For example:
+```zsh
+./setup/install --exclude nvm
+```
+
+### How it works
+- A workspace directory tree is created
+	- This behavior can be disabled with `-x workspace`
+- The loki zsh theme is downloaded and copied to `$HOME/.dotfiles/themes`
+	- This behavior can be disabled with `-x loki-theme`
+- `$HOME/.dotfiles` is created
+- Files matching `*.zsh` and `*.link` are copied to the new dotfiles directory
+- Links are created for files matching `*.link` in the home directory with the `.link` suffix removed
+- Files matching `*.script` are copied to `$HOME/workspace/script` with the `.script` suffix removed
+	- If the `workspace` module is excluded, scripts will be installed to `$HOME/script`
