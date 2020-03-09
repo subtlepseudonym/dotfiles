@@ -191,11 +191,13 @@ install_scripts () {
 
 parse_exclusions () {
 	zparseopts -D -E -- \
-		x:=exclude_opts \
-		-exclude:=exclude_opts
+		x+:=exclude_opts \
+		-exclude+:=exclude_opts
 
-	exclude+="${exclude_opts[@]:#-x}"
-	exclude+="${exclude_opts[@]:#--exclude}"
+	exclude_opts=("${exclude_opts[@]:#-x}")
+	exclude_opts=("${exclude_opts[@]:#--exclude}")
+
+	exclude+=${exclude_opts[@]}
 }
 
 list_modules () {
