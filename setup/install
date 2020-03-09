@@ -195,6 +195,12 @@ install_links () {
 }
 
 install_scripts () {
+	script_dir="${workspace}/script"
+	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
+		script_dir="${HOME}/script"
+		mkdir -p "${script_dir}"
+	fi
+
 	if [[ "$(uname -s)" != "Darwin" ]]; then
 		exclude+="macos"
 		info "$(printf "excluding macos scripts for uname value '%s'" $(uname -s))"
@@ -202,7 +208,7 @@ install_scripts () {
 
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude}) -false \) -prune -o -name '*.script' -print)
 	do
-		dst="${workspace}/script/$(basename "${src%.script}")"
+		dst="${script_dir}/$(basename "${src%.script}")"
 		cp "${src}" "${dst}"
 		if [[ $? -eq 0 ]]; then
 			success "copied ${src} to ${dst}"
