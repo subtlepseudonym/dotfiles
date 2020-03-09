@@ -57,14 +57,13 @@ install_workspace () {
 }
 
 install_dotfiles () {
-	# archive, ignore empty dirs, recursive, verbose
-	rsync -amrv \
-		--include="*.zsh" \
-		--include="*.link" \
-		--include="*/" \
-		--exclude=".git" \
-		--exclude="*" \
-		"${dotfiles_root}/" "${home_dotfiles}" 1>> $logfile 2>&1
+	mkdir "${home_dotfiles}"
+	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude}) -false \) -prune -o -name '*.zsh' -print -o -name '*.link' -print)
+	do
+		dst_dir="${home_dotfiles}/$(basename $(dirname "${src}"))"
+		[[ ! -d "${dst_dir}" ]] && mkdir -p "${dst_dir}"
+		cp "${src}" "${dst_dir}/$(basename "${src}")"
+	done
 
 	if [[ $? == 0 ]]; then
 		success "installed dotfiles"
