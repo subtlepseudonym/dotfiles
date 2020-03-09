@@ -11,7 +11,14 @@ home_dotfiles="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
 logfile="${HOME}/dotfile_install.log"
 
+zparseopts -D -E -- \
+	x+:=exclude_opts \
+	-exclude+:=exclude_opts
+exclude_opts=("${exclude_opts[@]:#-x}")
+exclude_opts=("${exclude_opts[@]:#--exclude}")
+
 exclude=('*.git*')
+exclude+=${exclude_opts[@]}
 
 info () {
 	printf "\r	[ \033[00;34m..\033[0m ] $1\n"
@@ -28,20 +35,6 @@ success () {
 error () {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
 }
-
-parse_exclusions () {
-	zparseopts -D -E -- \
-		x+:=exclude_opts \
-		-exclude+:=exclude_opts
-
-	exclude_opts=("${exclude_opts[@]:#-x}")
-	exclude_opts=("${exclude_opts[@]:#--exclude}")
-
-	exclude+=${exclude_opts[@]}
-}
-
-# parse excluded modules before using value of $exclude
-parse_exclusions
 
 install_workspace () {
 	mkdir -vp \
