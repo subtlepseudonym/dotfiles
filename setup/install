@@ -35,7 +35,7 @@ error () {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
 }
 
-install_workspace () {
+make_workspace () {
 	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
 		info "skipping workspace installation"
 		return
@@ -57,7 +57,7 @@ install_workspace () {
 	fi
 }
 
-install_vim_dir () {
+make_vim_dir () {
 	# skip if vim module is excluded
 	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
 
@@ -251,9 +251,11 @@ list_modules () {
 list_modules || exit
 : > $logfile
 
-install_workspace
-install_vim_dir
+make_workspace
+make_vim_dir
+
 install_dotfiles
 get_theme
+
 install_links
 install_scripts
