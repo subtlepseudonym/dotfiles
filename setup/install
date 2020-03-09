@@ -210,9 +210,11 @@ list_modules () {
 	)
 
 	info "The following modules will be installed:"
+	info
 	for module in $df_modules; do
 		info "\t$module"
 	done
+	info
 	info "( Use --exclude to remove modules from this list )"
 
 	user "Continue? [Yn]"
