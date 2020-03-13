@@ -220,7 +220,7 @@ install_scripts () {
 
 list_modules () {
 	df_modules=("workspace" "loki-theme")
-	df_modules+=($(basename --a \
+	df_modules+=($(basename -a \
 		$(find "${dotfiles_root}" \
 			\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
 		-prune -o -type d ! -path "${dotfiles_root}" -print)
