@@ -8,6 +8,7 @@ alias rga="rg --files --hidden"
 # Shortened commands
 alias dcc="docker-prune-containers"
 alias dci="docker-prune-images"
+alias dps="docker ps -a --format 'table {{.ID}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}'"
 
 # Micro-scripts
 alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
