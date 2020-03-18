@@ -1,8 +1,8 @@
 # Files
-alias ls='ls --color'
-alias la='ls -a'
-alias ll='ls -la'
-alias lh='ls -lah'
+alias ls="ls --color"
+alias la="ls -a"
+alias ll="ls -la"
+alias lh="ls -lah"
 alias rga="rg --files --hidden"
 
 # Shortened commands
