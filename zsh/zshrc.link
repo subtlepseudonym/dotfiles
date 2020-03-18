@@ -1,6 +1,9 @@
 # default environment
 export DOTFILES="${HOME}/.dotfiles"
-export HISTFILE="${HOME}/.zsh_history"
+
+export HISTFILE="${DOTFILES}/zsh/zsh_history"
+export HISTSIZE=2000
+export SAVEHIST=10000
 
 # load config files
 for file in $DOTFILES/**/(*).zsh
