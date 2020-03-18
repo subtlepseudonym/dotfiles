@@ -14,6 +14,7 @@ alias dps="docker ps -a --format 'table {{.ID}}\t{{.Image}}\t{{.RunningFor}}\t{{
 alias jq-prune="jq -R -r 'try fromjson'"
 alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
 alias pubip="curl 'https://api.ipify.org'"
+alias reload-alias="source \"${HOME}/.dotfiles/zsh/alias.zsh\""
 alias sl=swaplist
 alias swaplist="basename -a \"$(ls "${HOME}/.vim/tmp/swpdir")\" | sed 's#%#/#g' | sort"
 alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
