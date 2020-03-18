@@ -1,7 +1,4 @@
 #!/usr/bin/env zsh
-#
-# Credit for link_file goes to Zach Holman
-# https://github.com/holman/dotfiles/blob/master/script/bootstrap
 
 cd "$(dirname "${0}")/.."
 
@@ -35,7 +32,12 @@ error () {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
 }
 
-install_workspace () {
+make_workspace () {
+	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
+		info "skipping workspace installation"
+		return
+	fi
+
 	mkdir -vp \
 		"${workspace}/bin" \
 		"${workspace}/doc" \
@@ -43,15 +45,28 @@ install_workspace () {
 		"${workspace}/manifest" \
 		"${workspace}/sandbox" \
 		"${workspace}/script" \
-		"${workspace}/volume" \
-		"${HOME}/.vim/tmp/backupdir" \
-		"${HOME}/.vim/tmp/swpdir" \
-		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+		"${workspace}/volume" 1>> $logfile 2>&1
 
 	if [[ $? == 0 ]]; then
 		success "installed workspace"
 	else
 		error "could not install workspace, check $logfile"
+	fi
+}
+
+make_vim_dir () {
+	# skip if vim module is excluded
+	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
+
+	mkdir -vp \
+		"${HOME}/.vim/tmp/backupdir" \
+		"${HOME}/.vim/tmp/swpdir" \
+		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+
+	if [[ $? == 0 ]]; then
+		success "installed .vim directory"
+	else
+		error "could not install .vim directory, check $logfile"
 	fi
 }
 
@@ -72,6 +87,9 @@ install_dotfiles () {
 }
 
 get_theme () {
+	# skip if loki-theme module is excluded
+	[[ ${exclude[(ie)loki-theme]} -le ${#exclude} ]] && return
+
 	local ret
 	ret=0
 
@@ -177,6 +195,12 @@ install_links () {
 }
 
 install_scripts () {
+	script_dir="${workspace}/script"
+	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
+		script_dir="${HOME}/script"
+		mkdir -p "${script_dir}"
+	fi
+
 	if [[ "$(uname -s)" != "Darwin" ]]; then
 		exclude+="macos"
 		info "$(printf "excluding macos scripts for uname value '%s'" $(uname -s))"
@@ -184,7 +208,7 @@ install_scripts () {
 
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude}) -false \) -prune -o -name '*.script' -print)
 	do
-		dst="${workspace}/script/$(basename "${src%.script}")"
+		dst="${script_dir}/$(basename "${src%.script}")"
 		cp "${src}" "${dst}"
 		if [[ $? -eq 0 ]]; then
 			success "copied ${src} to ${dst}"
@@ -195,17 +219,16 @@ install_scripts () {
 }
 
 list_modules () {
-	df_modules=(
-		$(basename --multiple \
-			$(find "${dotfiles_root}" \
-				\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
-			-prune -o -type d ! -path "${dotfiles_root}" -print)
-		)
-	)
+	df_modules=("workspace" "loki-theme")
+	df_modules+=($(basename -a \
+		$(find "${dotfiles_root}" \
+			\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
+		-prune -o -type d ! -path "${dotfiles_root}" -print)
+	))
 
 	info "The following modules will be installed:"
 	info
-	for module in $df_modules; do
+	for module in ${(i)df_modules}; do
 		info "\t$module"
 	done
 	info
@@ -225,8 +248,11 @@ list_modules () {
 list_modules || exit
 : > $logfile
 
-install_workspace
+make_workspace
+make_vim_dir
+
 install_dotfiles
 get_theme
+
 install_links
 install_scripts
