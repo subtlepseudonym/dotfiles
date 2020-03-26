@@ -35,8 +35,9 @@ fi
 unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
 unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
 
-# ignore adjacent duplicate commands in history search
+# prevent duplicates in history
 setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
 
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
