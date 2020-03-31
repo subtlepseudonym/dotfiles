@@ -37,6 +37,9 @@ set si " smart indentation
 filetype plugin on " load plugin file based upon file type
 filetype indent on " load indent file based upon file type
 
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 

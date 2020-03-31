@@ -1,6 +1,10 @@
 # default environment
 export DOTFILES="${HOME}/.dotfiles"
 
+export HISTFILE="${DOTFILES}/zsh/zsh_history"
+export HISTSIZE=2000
+export SAVEHIST=10000
+
 # load config files
 for file in $DOTFILES/**/(*).zsh
 do
@@ -30,6 +34,10 @@ else
 fi
 unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND
 unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
+
+# prevent duplicates in history
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
 
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate

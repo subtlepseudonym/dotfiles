@@ -1,19 +1,21 @@
 # Files
-alias ls='ls --color'
-alias la='ls -a'
-alias ll='ls -la'
-alias lh='ls -lah'
+alias ls="ls --color"
+alias la="ls -a"
+alias ll="ls -la"
+alias lh="ls -lah"
 alias rga="rg --files --hidden"
 
-# Shortened commands
+# Docker
 alias dcc="docker-prune-containers"
 alias dci="docker-prune-images"
+alias dps="docker ps -a --format 'table {{.ID}}\t{{.Image}}\t{{.RunningFor}}\t{{.Status}}\t{{.Names}}'"
 
 # Micro-scripts
-alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
 alias jq-prune="jq -R -r 'try fromjson'"
-alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
-alias swaplist="ls '${HOME}/.vim/tmp/swpdir' | sed 's!.*/!!; s!%!/!g' | sort"
-alias sl=swaplist
-alias udate="date +%s"
+alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
 alias pubip="curl 'https://api.ipify.org'"
+alias reload-alias="source \"${HOME}/.dotfiles/zsh/alias.zsh\""
+alias sl=swaplist
+alias swaplist="ls '${HOME}/.vim/tmp/swpdir' | sed 's!.*/!!; s!%!/!g' | sort"
+alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
+alias udate="date +%s"
