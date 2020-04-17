@@ -40,6 +40,8 @@ filetype indent on " load indent file based upon file type
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
+au FileType gitcommit setlocal tw=72
+
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 
