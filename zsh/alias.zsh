@@ -16,6 +16,6 @@ alias jq-safe="jq -R -r '. as \$line | try fromjson catch \$line'"
 alias pubip="curl 'https://api.ipify.org'"
 alias reload-alias="source \"${HOME}/.dotfiles/zsh/alias.zsh\""
 alias sl=swaplist
-alias swaplist="basename -a \"$(ls "${HOME}/.vim/tmp/swpdir")\" | sed 's#%#/#g' | sort"
+alias swaplist="ls '${HOME}/.vim/tmp/swpdir' | sed 's!.*/!!; s!%!/!g' | sort"
 alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
 alias udate="date +%s"
