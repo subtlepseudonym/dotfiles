@@ -59,9 +59,14 @@ make_vim_dir () {
 	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
 
 	mkdir -vp \
+		"${HOME}/.vim/colors" \
 		"${HOME}/.vim/tmp/backupdir" \
 		"${HOME}/.vim/tmp/swpdir" \
 		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+
+	if [[ -d "${dotfiles_root}/vim/colors" ]]; then
+		cp -r "${dotfiles_root}/vim/colors/." "${HOME}/.vim/colors" &>> $logfile
+	fi
 
 	if [[ $? == 0 ]]; then
 		success "installed .vim directory"
