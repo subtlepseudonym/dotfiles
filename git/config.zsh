@@ -1,2 +1,2 @@
-zstyle ':completion:*:*:git:*' script "${ZSH}/git/git-completion.bash"
-fpath=("${ZSH}/git" ${fpath})
+zstyle ':completion:*:*:git:*' script "${DOTFILES}/git/git-completion.bash"
+fpath=("${DOTFILES}/git" ${fpath})

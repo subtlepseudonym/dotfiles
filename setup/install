@@ -99,7 +99,7 @@ get_theme () {
 	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${home_dotfiles}/themes/loki.zsh-theme" 1>> $logfile 2>&1
 	ret=$(( $ret | $? ))
 
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/zsh/git-patch.zsh" 1>> $logfile 2>&1
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" 1>> $logfile 2>&1
 	ret=$(( $ret | $? ))
 
 	if [[ $? == 0 ]]; then
