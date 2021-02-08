@@ -1,5 +1,6 @@
 # Files
-alias ls="ls --color"
+ls --color &> /dev/null && alias ls="ls --color"
+ls -G &> /dev/null && alias ls="ls -G"
 alias la="ls -a"
 alias ll="ls -la"
 alias lh="ls -lah"
