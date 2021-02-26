@@ -1,30 +1,52 @@
 #!/bin/bash
 
+ORG="__org__"
+TOKEN="__token__"
+
 if [[ "$#" < 1 ]]; then
-	echo "usage: check-leaderboard.sh REPO"
+	echo "usage: check-leaderboard.sh REPO [--all]"
 	exit
 fi
 
-all=false
+REPO="$1"
+ALL=
 if [[ "$2" == *"all" ]]; then
-	all=true
+	ALL="true"
 fi
 
-REPO="$1"
+{
+	read gh_body
+	read gh_code
+}< <(
+	curl \
+		--write-out "%{http_code}\n" \
+		--header "Authorization: token ${TOKEN}" \
+		--header "accept: pplication/vnd.github.v3+json" \
+		--url "https://api.github.com/repos/${ORG}/${REPO}/stats/contributors" \
+		2>/dev/null | jq -c
+) # the jq subshell ensures the body occupies just one line of output
 
-gh_token="__token__"
-gh_req=`curl --header "Authorization: token ${gh_token}" --url "https://api.github.com/repos/movableink/${REPO}/stats/contributors" 2>/dev/null`
+case "${gh_code}" in
+	"200")
+		;;
+	"202")
+		# there are a few issues open talking about this, likely we're just waiting on a database call under the hood
+		echo "github API responded with 202 Accepted, please try again in a few seconds"
+		exit
+		;;
+	*)
+		echo "unexpected response code from github: " "${gh_code}"
+		exit 1
+		;;
+esac
 
-leaderboard=`echo "${gh_req}" | /usr/local/bin/jq 'map({author: .author.login, total}) | sort_by(.total)'`
-leader=`echo "${leaderboard}" | /usr/local/bin/jq 'last | .author'`
-commits=`echo "${leaderboard}" | /usr/local/bin/jq 'last | .total'`
+leaderboard="$(jq 'map({author: .author.login, total}) | sort_by(.total)' <(echo "${gh_body}"))"
+leader="$(jq 'last | .author' <(echo "${leaderboard}"))"
+commits="$(jq 'last | .total' <(echo "${leaderboard}"))"
 
-if [[ "${leader}"  == "subtlepseudonym" ]]; then
-	/Users/cdemille/workspace/scripts/alert.sh "Leading ${REPO} with "${commits}" commits!"
+if [[ ! -z "${ALL}" ]]; then
+	# print top 10 in JSON
+	echo "${leaderboard}" | jq 'reverse | .[:10]'
 else
-	if [[ $all == "true" ]]; then
-		echo "${leaderboard}" | jq 'reverse | .[:10]'
-	else
-		echo `date` "--" "${leader}" "--" "${commits}"
-	fi
+	echo "${leaderboard}" | jq 'last | "\(.author) -- \(.total)"' | tr -d '"'
 fi
