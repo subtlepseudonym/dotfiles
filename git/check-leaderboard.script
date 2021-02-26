@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [[ "$#" < 1 ]]; then
+	echo "usage: check-leaderboard.sh REPO"
+	exit
+fi
+
+all=false
+if [[ "$2" == *"all" ]]; then
+	all=true
+fi
+
+REPO="$1"
+
+gh_token="__token__"
+gh_req=`curl --header "Authorization: token ${gh_token}" --url "https://api.github.com/repos/movableink/${REPO}/stats/contributors" 2>/dev/null`
+
+leaderboard=`echo "${gh_req}" | /usr/local/bin/jq 'map({author: .author.login, total}) | sort_by(.total)'`
+leader=`echo "${leaderboard}" | /usr/local/bin/jq 'last | .author'`
+commits=`echo "${leaderboard}" | /usr/local/bin/jq 'last | .total'`
+
+if [[ "${leader}"  == "subtlepseudonym" ]]; then
+	/Users/cdemille/workspace/scripts/alert.sh "Leading ${REPO} with "${commits}" commits!"
+else
+	if [[ $all == "true" ]]; then
+		echo "${leaderboard}" | jq 'reverse | .[:10]'
+	else
+		echo `date` "--" "${leader}" "--" "${commits}"
+	fi
+fi
