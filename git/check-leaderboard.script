@@ -1,30 +1,80 @@
 #!/bin/bash
 
-ORG="__org__"
-TOKEN="__token__"
+# Default values
+ORG="stellarhealth"
+REPO="stellar"
+LENGTH=15
 
-if [[ "$#" < 1 ]]; then
-	echo "usage: check-leaderboard.sh REPO [--all]"
-	exit
-fi
+function helptext () {
+	echo \
+"""USAGE: check-leaderboard [options] [REPO]
 
-REPO="$1"
-ALL=
-if [[ "$2" == *"all" ]]; then
-	ALL="true"
-fi
+Arguments:
+  REPO:        Specify which repository to query
 
+Flags:
+  -h, --help:  Print this help text
+  -a, --all:   List all contributors
+  -o, --org:   Specify which organization to query
+  -r, --repo:  Specify which repository to query"""
+	exit 1
+}
+
+while (( "$#" )); do
+	case "${1}" in
+		-h|--help)
+			helptext
+			;;
+		-a|--all)
+			LENGTH=100  # 100 contributors is plenty
+			shift
+			;;
+		-n|--length)
+			if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+				LENGTH="${2}"
+				shift 2
+			else
+				echo "Missing argument for \"${1}\""
+				exit 1
+			fi
+			;;
+		-o|--org)
+			if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+				ORG="${2}"
+				shift 2
+			else
+				echo "Missing argument for \"${1}\""
+				exit 1
+			fi
+			;;
+		-r|--repo)
+			if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+				REPO="${2}"
+				shift 2
+			else
+				echo "Missing argument for \"${1}\""
+				exit 1
+			fi
+			;;
+		-*|--*)
+			echo "Unknown flag \"${1}\""
+			helptext
+			;;
+		*)
+			ARGS="${ARGS} ${1}"
+			shift
+			;;
+	esac
+done
+
+eval set -- "${ARGS}"
+REPO="${REPO:-1}"
+
+endpoint="repos/${ORG}/${REPO}/stats/contributors"
 {
 	read gh_body
 	read gh_code
-}< <(
-	curl \
-		--write-out "%{http_code}\n" \
-		--header "Authorization: token ${TOKEN}" \
-		--header "accept: pplication/vnd.github.v3+json" \
-		--url "https://api.github.com/repos/${ORG}/${REPO}/stats/contributors" \
-		2>/dev/null | jq -c
-) # the jq subshell ensures the body occupies just one line of output
+}< <(get-github "${endpoint}")
 
 case "${gh_code}" in
 	"200")
@@ -40,13 +90,21 @@ case "${gh_code}" in
 		;;
 esac
 
-leaderboard="$(jq 'map({author: .author.login, total}) | sort_by(.total)' <(echo "${gh_body}"))"
-leader="$(jq 'last | .author' <(echo "${leaderboard}"))"
-commits="$(jq 'last | .total' <(echo "${leaderboard}"))"
+leaderboard="$(
+	jq "
+		map({author: .author.login, total}) |
+		sort_by(.total) |
+		reverse |
+		.[:${LENGTH}]
+	" <(echo "${gh_body}")
+)"
+longest_author="$(jq "max_by((.author | length)) | .author | length" <(echo "${leaderboard}"))"
 
-if [[ ! -z "${ALL}" ]]; then
-	# print top 10 in JSON
-	echo "${leaderboard}" | jq 'reverse | .[:10]'
-else
-	echo "${leaderboard}" | jq 'last | "\(.author) -- \(.total)"' | tr -d '"'
-fi
+text_leaderboard="$(
+	jq --raw-output "
+		to_entries |
+		map(\"\(.key) \(.value.author) \(.value.total)\") |
+		.[]
+	" <(echo "${leaderboard}")
+)"
+printf "% 3d  % ${longest_author}s % 4d\n" ${text_leaderboard}
