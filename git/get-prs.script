@@ -1,0 +1,22 @@
+#!/bin/bash
+
+ORG="stellarhealth"
+AUTHOR="subtlepseudonym"
+
+endpoint="search/issues?q=org:${ORG}%20type:pr%20author:${AUTHOR}"
+filter='.items | map({repo: (.repository_url | split("/") | .[-1]), number, title: (.title | gsub("\""; "")), created_at, closed_at})'
+{
+	read gh_body
+	read gh_code
+}< <(get-github "${endpoint}" "${filter}")
+
+case "${gh_code}" in
+	"200")
+		;;
+	*)
+		echo "unexpected response code from github: " "${gh_code}"
+		exit 1
+		;;
+esac
+
+echo "${gh_body}" | jq

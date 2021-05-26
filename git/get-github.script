@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TOKEN="super_secret"
+ENDPOINT="$1"
+FILTER="${2-.}"
+
+{
+	read gh_body
+	read gh_code
+}< <(
+	curl \
+		--write-out "%{http_code}\n" \
+		--header "Authorization: token ${TOKEN}" \
+		--header "accept: application/vnd.github.v3+json" \
+		--url "https://api.github.com/${ENDPOINT}" \
+		2>/dev/null | jq --compact-output "def handle: ${FILTER}; . as \$line | try handle catch \$line"
+) # the jq subshell ensures the body occupies just one line of output
+
+echo "${gh_body}"
+echo "${gh_code}"
