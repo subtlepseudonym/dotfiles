@@ -1,6 +1,6 @@
 # Files
-ls --color &> /dev/null && alias ls="ls --color"
-ls -G &> /dev/null && alias ls="ls -G"
+[[ "$(uname)" == "Darwin" ]] && alias ls="ls -G"
+[[ "$(uname)" == "Linux" ]] && alias ls="ls --color"
 alias la="ls -a"
 alias ll="ls -la"
 alias lh="ls -lah"
