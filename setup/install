@@ -13,8 +13,7 @@ zparseopts -D -E -- \
 exclude_opts=("${exclude_opts[@]:#-x}")
 exclude_opts=("${exclude_opts[@]:#--exclude}")
 
-exclude=('*.git*')
-exclude+=(${exclude_opts})
+exclude=('*.git*' ${exclude_opts})
 
 info () {
 	printf "\r	[ \033[00;34m..\033[0m ] $1\n"
@@ -224,10 +223,12 @@ install_scripts () {
 }
 
 list_modules () {
+	df_exclude=("setup" "zsh" ${exclude})
+
 	df_modules=("workspace" "loki-theme")
 	df_modules+=($(basename -a \
 		$(find "${dotfiles_root}" \
-			\( $(printf -- "-path */%s -o " ${exclude} "setup" "zsh") -false \) \
+			\( $(printf -- "-path */%s -o " ${df_exclude}) -false \) \
 		-prune -o -type d ! -path "${dotfiles_root}" -print)
 	))
 
