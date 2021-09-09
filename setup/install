@@ -9,7 +9,9 @@ logfile="${HOME}/dotfile_install.log"
 
 zparseopts -D -E -- \
 	x+:=exclude_opts \
-	-exclude+:=exclude_opts
+	-exclude+:=exclude_opts \
+	-unattended=unattended
+
 exclude_opts=("${exclude_opts[@]:#-x}")
 exclude_opts=("${exclude_opts[@]:#--exclude}")
 
@@ -240,8 +242,12 @@ list_modules () {
 	info
 	info "( Use --exclude to remove modules from this list )"
 
-	user "Continue? [Yn]"
-	read action
+	if [[ -z "${unattended}" ]]; then
+		user "Continue? [Yn]"
+		read action
+	else
+		action="yes"
+	fi
 
 	case "$action" in
 		n )
