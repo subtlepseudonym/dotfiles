@@ -14,7 +14,7 @@ exclude_opts=("${exclude_opts[@]:#-x}")
 exclude_opts=("${exclude_opts[@]:#--exclude}")
 
 exclude=('*.git*')
-exclude+=${exclude_opts[@]}
+exclude+=(${exclude_opts})
 
 info () {
 	printf "\r	[ \033[00;34m..\033[0m ] $1\n"
