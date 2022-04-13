@@ -42,6 +42,9 @@ autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
 au FileType gitcommit setlocal tw=72
 
+au BufRead,BufNewFile Earthfile set filetype=Earthfile
+au BufRead,BufNewFile build.earth set filetype=Earthfile
+
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 
