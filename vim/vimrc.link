@@ -48,6 +48,9 @@ au BufRead,BufNewFile build.earth set filetype=Earthfile
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 
+" Color schemes
+colorscheme evening
+
 " Store runtime files in ~/.vim
 try
     set viminfo+=n~/.vim/.viminfo
