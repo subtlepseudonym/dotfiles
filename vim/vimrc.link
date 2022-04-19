@@ -48,6 +48,13 @@ au BufRead,BufNewFile build.earth set filetype=Earthfile
 " For when I forget to sudo vim a write-protected file
 command W w !sudo tee % > /dev/null
 
+" Command aliases
+fun! SetupCommandAlias(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfun
+
 " Color schemes
 colorscheme evening
 
