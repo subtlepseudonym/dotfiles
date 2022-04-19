@@ -55,6 +55,8 @@ fun! SetupCommandAlias(from, to)
         \ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfun
 
+call SetupCommandAlias("Noh", "noh")
+
 " Color schemes
 colorscheme evening
 
