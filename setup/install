@@ -122,7 +122,7 @@ install_dotfiles () {
 			success "dry-run: copied ${src} to ${dst}"
 		else
 			cp "${src}" "${dst}"
-			if [[ $? -eq 0 ]]; then
+			if [[ $? == 0 ]]; then
 				success "copied ${src} to ${dst}"
 			else
 				error "could not copy ${src} to ${dst}"
@@ -162,7 +162,7 @@ get_theme () {
 	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
-	if [[ $? == 0 ]]; then
+	if [[ $ret == 0 ]]; then
 		success "installed theme"
 	else
 		error "could not install theme, check ${logfile}"
@@ -285,7 +285,7 @@ install_scripts () {
 			success "dry-run: copied ${src} to ${dst}"
 		else
 			cp "${src}" "${dst}"
-			if [[ $? -eq 0 || $#dry_run ]]; then
+			if [[ $? == 0 || $#dry_run ]]; then
 				success "copied ${src} to ${dst}"
 			else
 				error "could not copy ${src} to ${dst}"
