@@ -69,6 +69,10 @@ make_vim_dir () {
 		cp -r "${dotfiles_root}/vim/colors/." "${HOME}/.vim/colors" &>> $logfile
 	fi
 
+	if [[ -d "${dotfiles_root}/vim/syntax" ]]; then
+		cp -r "${dotfiles_root}/vim/syntax/." "${HOME}/.vim/syntax" &>> $logfile
+	fi
+
 	if [[ $? == 0 ]]; then
 		success "installed .vim directory"
 	else
