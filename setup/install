@@ -123,7 +123,7 @@ install_dotfiles () {
 		else
 			cp "${src}" "${dst}"
 			if [[ $? == 0 ]]; then
-				success "copied ${src} to ${dst}"
+				(( $#verbose )) && success "copied ${src} to ${dst}"
 			else
 				error "could not copy ${src} to ${dst}"
 			fi
