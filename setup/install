@@ -2,7 +2,7 @@
 
 cd "$(dirname "${0}")/.."
 
-dotfiles_root="$(pwd -P)"
+dotfiles_root="$(readlink -f $(pwd -P))"
 home_dotfiles="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
 logfile="${HOME}/dotfile_install.log"
@@ -15,7 +15,11 @@ zparseopts -D -E -- \
 exclude_opts=("${exclude_opts[@]:#-x}")
 exclude_opts=("${exclude_opts[@]:#--exclude}")
 
-exclude=('*.git*' ${exclude_opts})
+exclude=(
+	'*.git*'
+	'*setup*'
+	${exclude_opts}
+)
 
 info () {
 	printf "\r	[ \033[00;34m..\033[0m ] $1\n"
@@ -81,12 +85,12 @@ make_vim_dir () {
 }
 
 install_dotfiles () {
-	mkdir "${home_dotfiles}"
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude}) -false \) -prune -o -name '*.zsh' -print -o -name '*.link' -print)
+	for src in $(find -H "${dotfiles_root}" \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -depth 2 -type f)
 	do
-		dst_dir="${home_dotfiles}/$(basename $(dirname "${src}"))"
+		rel_src="${src#"${dotfiles_root}/"}"
+		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
 		[[ ! -d "${dst_dir}" ]] && mkdir -p "${dst_dir}"
-		cp "${src}" "${dst_dir}/$(basename "${src}")"
+		dst="${dst_dir}/$(basename "${rel_src}")"
 	done
 
 	if [[ $? == 0 ]]; then
