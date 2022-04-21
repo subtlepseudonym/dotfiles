@@ -10,6 +10,9 @@ logfile="${HOME}/dotfile_install.log"
 zparseopts -D -E -- \
 	x+:=exclude_opts \
 	-exclude+:=exclude_opts \
+	v=verbose \
+	verbose=verbose \
+	-dry-run=dry_run \
 	-unattended=unattended
 
 exclude_opts=("${exclude_opts[@]:#-x}")
@@ -43,6 +46,11 @@ make_workspace () {
 		return
 	fi
 
+	if (( $#dry_run )); then
+		success "dry-run: installed workspace"
+		return
+	fi
+
 	mkdir -vp \
 		"${workspace}/bin" \
 		"${workspace}/doc" \
@@ -63,24 +71,34 @@ make_vim_dir () {
 	# skip if vim module is excluded
 	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
 
-	mkdir -vp \
-		"${HOME}/.vim/colors" \
-		"${HOME}/.vim/tmp/backupdir" \
-		"${HOME}/.vim/tmp/swpdir" \
-		"${HOME}/.vim/tmp/undodir" 1>> $logfile 2>&1
+	for src ('colors' 'tmp/backupdir' 'tmp/swpdir' 'tmp/undodir')
+	do
+		dir="${HOME}/.vim/${src}"
+		if (( $#dry_run )); then
+			success "dry-run: mkdir ${dir}"
+		else
+			mkdir -vp "${dir}" 1>> ${logfile} 2>&1
+			(( $#verbose )) && success "created ${dir}"
+		fi
+	done
 
-	if [[ -d "${dotfiles_root}/vim/colors" ]]; then
-		cp -r "${dotfiles_root}/vim/colors/." "${HOME}/.vim/colors" &>> $logfile
-	fi
+	for src ('colors' 'syntax')
+	do
+		dir="${dotfiles_root}/vim/${src}"
+		if [[ -d "${dir}" ]]; then
+			if (( $#dry_run)); then
+				success "dry-run: coped recursively ${dir}"
+			else
+				cp -r "${dir}" "${HOME}/.vim/${src}" &>> $logfile
+				(( $#verbose )) && success "copied recursively ${src}"
+			fi
+		fi
+	done
 
-	if [[ -d "${dotfiles_root}/vim/syntax" ]]; then
-		cp -r "${dotfiles_root}/vim/syntax/." "${HOME}/.vim/syntax" &>> $logfile
-	fi
-
-	if [[ $? == 0 ]]; then
-		success "installed .vim directory"
+	if (( $#dry_run )); then
+		success "dry-run: installed .vim directory"
 	else
-		error "could not install .vim directory, check $logfile"
+		success "installed .vim directory"
 	fi
 }
 
@@ -89,21 +107,33 @@ install_dotfiles () {
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
 		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
-		[[ ! -d "${dst_dir}" ]] && mkdir -p "${dst_dir}"
+
+		if [[ ! -d "${dst_dir}" ]]; then
+			if (( $#dry_run )); then
+				success "dry-run: created ${dst_dir}"
+			else
+				mkdir -vp "${dst_dir}" &>> $logfile
+			fi
+		fi
+
 		dst="${dst_dir}/$(basename "${rel_src}")"
 
-		cp "${src}" "${dst}"
-		if [[ $? -eq 0 ]]; then
-			success "copied ${src} to ${dst}"
+		if (( $#dry_run )); then
+			success "dry-run: copied ${src} to ${dst}"
 		else
-			error "could not copy ${src} to ${dst}"
+			cp "${src}" "${dst}"
+			if [[ $? -eq 0 ]]; then
+				success "copied ${src} to ${dst}"
+			else
+				error "could not copy ${src} to ${dst}"
+			fi
 		fi
 	done
 
-	if [[ $? == 0 ]]; then
-		success "installed dotfiles"
+	if (( $#dry_run )); then
+		success "dry-run: installed dotfiles"
 	else
-		error "could not install dotfiles, check $logfile"
+		success "installed dotfiles"
 	fi
 }
 
@@ -114,10 +144,19 @@ get_theme () {
 	local ret
 	ret=0
 
-	mkdir -vp "${home_dotfiles}/themes" 1>> $logfile 2>&1
+	themes_dir="${home_dotfiles/themes}"
+	if (( $#dry_run )); then
+		success "dry-run: created ${themes_dir}"
+		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme"
+		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git/git-patch.zsh"
+		success "dry-run: installed theme"
+		return
+	fi
+
+	mkdir -vp "${themes_dir}" 1>> $logfile 2>&1
 	ret=$(( $ret | $? ))
 
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${home_dotfiles}/themes/loki.zsh-theme" 1>> $logfile 2>&1
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${themes_dir}/loki.zsh-theme" 1>> $logfile 2>&1
 	ret=$(( $ret | $? ))
 
 	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" 1>> $logfile 2>&1
@@ -182,14 +221,22 @@ link_file () {
 
 		if [[ "$overwrite" == "true" ]]
 		then
-			rm -rf "$dst"
-			success "removed $dst"
+			if (( $#dry_run )); then
+				success "dry-run: removed $dst"
+			else
+				rm -rf "$dst"
+				success "removed $dst"
+			fi
 		fi
 
 		if [[ "$backup" == "true" ]]
 		then
-			mv "$dst" "${dst}.bak"
-			success "moved $dst to ${dst}.bak"
+			if (( $#dry_run)); then
+				success "dry-run: moved $dst to ${dst}.bak"
+			else
+				mv "$dst" "${dst}.bak"
+				success "moved $dst to ${dst}.bak"
+			fi
 		fi
 
 		if [[ "$skip" == "true" ]]
@@ -200,8 +247,12 @@ link_file () {
 
 	if [[ "$skip" != "true" ]]	# "false" or empty
 	then
-		ln -s "$src" "$dst"
-		success "linked $src to $dst"
+		if (( $#dry_run )); then
+			success "dry-run: linked $src to $dst"
+		else 
+			ln -s "$src" "$dst"
+			success "linked $src to $dst"
+		fi
 	fi
 }
 
@@ -230,11 +281,15 @@ install_scripts () {
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-path */%s -o " ${exclude}) -false \) -prune -o -name '*.script' -print)
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
-		cp "${src}" "${dst}"
-		if [[ $? -eq 0 ]]; then
-			success "copied ${src} to ${dst}"
+		if (( $#dry_run )); then
+			success "dry-run: copied ${src} to ${dst}"
 		else
-			error "could not copy ${src} to ${dst}"
+			cp "${src}" "${dst}"
+			if [[ $? -eq 0 || $#dry_run ]]; then
+				success "copied ${src} to ${dst}"
+			else
+				error "could not copy ${src} to ${dst}"
+			fi
 		fi
 	done
 }
