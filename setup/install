@@ -58,12 +58,12 @@ make_workspace () {
 		"${workspace}/manifest" \
 		"${workspace}/sandbox" \
 		"${workspace}/script" \
-		"${workspace}/volume" 1>> $logfile 2>&1
+		"${workspace}/volume" &>> ${logfile}
 
 	if [[ $? == 0 ]]; then
 		success "installed workspace"
 	else
-		error "could not install workspace, check $logfile"
+		error "could not install workspace, check ${logfile}"
 	fi
 }
 
@@ -77,7 +77,7 @@ make_vim_dir () {
 		if (( $#dry_run )); then
 			success "dry-run: mkdir ${dir}"
 		else
-			mkdir -vp "${dir}" 1>> ${logfile} 2>&1
+			mkdir -vp "${dir}" &>> ${logfile}
 			(( $#verbose )) && success "created ${dir}"
 		fi
 	done
@@ -89,7 +89,7 @@ make_vim_dir () {
 			if (( $#dry_run)); then
 				success "dry-run: coped recursively ${dir}"
 			else
-				cp -r "${dir}" "${HOME}/.vim/${src}" &>> $logfile
+				cp -r "${dir}" "${HOME}/.vim/${src}" &>> ${logfile}
 				(( $#verbose )) && success "copied recursively ${src}"
 			fi
 		fi
@@ -112,7 +112,7 @@ install_dotfiles () {
 			if (( $#dry_run )); then
 				success "dry-run: created ${dst_dir}"
 			else
-				mkdir -vp "${dst_dir}" &>> $logfile
+				mkdir -vp "${dst_dir}" &>> ${logfile}
 			fi
 		fi
 
@@ -153,19 +153,19 @@ get_theme () {
 		return
 	fi
 
-	mkdir -vp "${themes_dir}" 1>> $logfile 2>&1
+	mkdir -vp "${themes_dir}" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${themes_dir}/loki.zsh-theme" 1>> $logfile 2>&1
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${themes_dir}/loki.zsh-theme" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" 1>> $logfile 2>&1
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
 	if [[ $? == 0 ]]; then
 		success "installed theme"
 	else
-		error "could not install theme, check $logfile"
+		error "could not install theme, check ${logfile}"
 	fi
 }
 
@@ -328,7 +328,7 @@ list_modules () {
 }
 
 list_modules || exit
-: > $logfile
+: > ${logfile}
 
 make_workspace
 make_vim_dir
