@@ -301,7 +301,7 @@ list_modules () {
 	df_modules+=($(basename -a \
 		$(find "${dotfiles_root}" \
 			\( $(printf -- "-path */%s -o " ${df_exclude}) -false \) \
-		-prune -o -type d ! -path "${dotfiles_root}" -print)
+		-prune -or -depth 1 -type d ! -path "${dotfiles_root}" -print)
 	))
 
 	info "The following modules will be installed:"
