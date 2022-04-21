@@ -91,6 +91,13 @@ install_dotfiles () {
 		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
 		[[ ! -d "${dst_dir}" ]] && mkdir -p "${dst_dir}"
 		dst="${dst_dir}/$(basename "${rel_src}")"
+
+		cp "${src}" "${dst}"
+		if [[ $? -eq 0 ]]; then
+			success "copied ${src} to ${dst}"
+		else
+			error "could not copy ${src} to ${dst}"
+		fi
 	done
 
 	if [[ $? == 0 ]]; then
