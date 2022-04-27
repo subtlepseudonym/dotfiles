@@ -22,7 +22,7 @@ For example:
 - The loki zsh theme is downloaded and copied to `$HOME/.dotfiles/themes`
 	- This behavior can be disabled with `-x loki-theme`
 - `$HOME/.dotfiles` is created
-- Files matching `*.zsh` and `*.link` are copied to the new dotfiles directory
+- Files other than `*.script` are copied to the new dotfiles directory
 - Links are created for files matching `*.link` in the home directory with the `.link` suffix removed
 - Files matching `*.script` are copied to `$HOME/workspace/script` with the `.script` suffix removed
 	- If the `workspace` module is excluded, scripts will be installed to `$HOME/script`
