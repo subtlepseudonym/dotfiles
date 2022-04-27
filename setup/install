@@ -103,7 +103,7 @@ make_vim_dir () {
 }
 
 install_dotfiles () {
-	for src in $(find -H "${dotfiles_root}" \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -depth 2 -type f)
+	for src in $(find -H "${dotfiles_root}" \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -depth 2 -type f -not -iregex '.*\.script')
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
 		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
