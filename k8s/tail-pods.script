@@ -3,6 +3,8 @@
 levels=('error') # default error
 zparseopts -D -E -K -- \
 	-compact-output=compact_output \
+	h=help \
+	-help=help \
 	--namespace:=namespace \
 	--context:=context \
 	-since:=since \
@@ -11,8 +13,26 @@ zparseopts -D -E -K -- \
 # prune flag names
 levels=("${levels[@]:#--level}")
 
-if [[ $# < 1 || "$1" == "--help" || "$1" == "-h" ]]; then
-	echo "usage: tail_pods.zsh <pod-regex> [--compact-output] [--since=DURATION] [--level=LEVEL]"
+if [[ "${help+x}" ]]; then
+	echo \
+'Tail multiple pods and parse their output for errors
+
+Usage:
+    usage: tail-pods [flags] <pod-regex>
+
+Flags:
+        --compact-output        Print JSON output on a single line
+        --context CONTEXT       Use kubectl context CONTEXT
+    -h, --help                  Display this help text
+        --level LEVEL           Display logs with LEVEL log level. To specify multiple log levels, repeat this option
+        --namespace NAMESPACE   Use kubectl namespace NAMESPACE
+        --since DURATION        Only display logs newer than DURATION ago
+'
+	exit 0
+fi
+
+if [[ $# < 1 ]]; then
+	echo 'usage: tail-pods [flags] <pod-regex>'
 	exit 1
 fi
 
