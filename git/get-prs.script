@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ORG="stellarhealth"
+ORG="${GITHUB_SCRIPT_ORG}"
 AUTHOR="subtlepseudonym"
 
 endpoint="search/issues?q=org:${ORG}%20type:pr%20author:${AUTHOR}"

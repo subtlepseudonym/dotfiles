@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Default values
-ORG="TriggerMail"
-REPO=""
+ORG="${GITHUB_SCRIPT_ORG}"
+REPO="${GITHUB_SCRIPT_REPO}"
 LENGTH=15
 
 function helptext () {
