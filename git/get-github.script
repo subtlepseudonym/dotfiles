@@ -10,7 +10,7 @@ FILTER="${2-.}"
 }< <(
 	curl \
 		--write-out "%{http_code}\n" \
-		--user "subtlepseudonym:${TOKEN}" \
+		--header "authorization: token ${TOKEN}" \
 		--header "accept: application/vnd.github.v3+json" \
 		--url "https://api.github.com/${ENDPOINT}" \
 		2>/dev/null | jq --compact-output "def handle: ${FILTER}; . as \$line | try handle catch \$line"
