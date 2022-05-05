@@ -55,6 +55,7 @@ make_workspace () {
 		"${workspace}/bin" \
 		"${workspace}/doc" \
 		"${workspace}/git" \
+		"${workspace}/log" \
 		"${workspace}/manifest" \
 		"${workspace}/sandbox" \
 		"${workspace}/script" \
