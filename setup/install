@@ -104,7 +104,7 @@ make_vim_dir () {
 }
 
 install_dotfiles () {
-	for src in $(find -H "${dotfiles_root}" \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -depth 2 -type f -not -iregex '.*\.script')
+	for src in $(find -H "${dotfiles_root}" -mindepth 2 -maxdepth 2 \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -type f -not -iregex '.*\.script')
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
 		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
@@ -301,8 +301,10 @@ list_modules () {
 	df_modules=("workspace" "loki-theme")
 	df_modules+=($(basename -a \
 		$(find "${dotfiles_root}" \
-			\( $(printf -- "-path */%s -o " ${df_exclude}) -false \) \
-		-prune -or -depth 1 -type d ! -path "${dotfiles_root}" -print)
+			-mindepth 1 -maxdepth 1 \
+			\( $(printf -- "-not -path */%s -and " ${df_exclude}) -true \) \
+			-and -type d
+		)
 	))
 
 	info "The following modules will be installed:"
