@@ -104,7 +104,7 @@ make_vim_dir () {
 }
 
 install_dotfiles () {
-	for src in $(find -H "${dotfiles_root}" -mindepth 2 -maxdepth 2 \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -type f -not -iregex '.*\.script')
+	for src in $(find -H "${dotfiles_root}" -mindepth 2 -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -type f -not -iregex '.*\.script')
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
 		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
@@ -260,7 +260,7 @@ link_file () {
 install_links () {
 	local overwrite_all=false backup_all=false skip_all=false
 
-	for src in $(find -H "${home_dotfiles}" -maxdepth 2 \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -name '*.link')
+	for src in $(find -H "${home_dotfiles}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.link')
 	do
 		dst="${HOME}/.$(basename "${src%.*}")"
 		link_file "${src}" "${dst}"
@@ -279,7 +279,7 @@ install_scripts () {
 		info "$(printf "excluding macos scripts for uname value '%s'" $(uname -s))"
 	fi
 
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s -and " ${exclude}) -true \) -name '*.script')
+	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
 		if (( $#dry_run )); then
