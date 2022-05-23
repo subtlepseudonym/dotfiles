@@ -1,12 +1,12 @@
 #!/usr/bin/env -S zsh
 
 levels=('error') # default error
-zparseopts -D -E -K -- \
+zparseopts -D -E -- \
 	-compact-output=compact_output \
 	h=help \
 	-help=help \
-	--namespace:=namespace \
-	--context:=context \
+	-namespace:=namespace \
+	-context:=context \
 	-since:=since \
 	-level+:=levels
 
