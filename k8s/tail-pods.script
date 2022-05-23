@@ -13,7 +13,7 @@ zparseopts -D -E -- \
 # prune flag names
 levels=("${levels[@]:#--level}")
 
-if [[ "${help+x}" ]]; then
+if [[ "${help}" != "" ]]; then
 	echo \
 'Tail multiple pods and parse their output for errors
 
