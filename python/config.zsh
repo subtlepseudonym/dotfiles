@@ -1,7 +1,9 @@
-PYENV_ROOT="${HOME}/workspace/git/pyenv/pyenv"
+PYENV_ROOT="${HOME}/.pyenv"
 
-if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
-	path=("${PYENV_ROOT}/bin" "${path[@]}")
+if [[ -f "$(command -v pyenv)" || -f "${PYENV_ROOT}/bin/pyenv" ]]; then
+	if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
+		path=("${PYENV_ROOT}/bin" "${path[@]}")
+	fi
 
 	export PYENV_ROOT
 	eval "$(pyenv init --path)"
