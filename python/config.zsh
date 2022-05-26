@@ -6,7 +6,6 @@ if [[ -f "$(command -v pyenv)" || -f "${PYENV_ROOT}/bin/pyenv" ]]; then
 	fi
 
 	export PYENV_ROOT
-	eval "$(pyenv init --path)"
 	eval "$(pyenv init -)"
 fi
 
