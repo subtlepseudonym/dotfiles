@@ -3,7 +3,7 @@
 cd "$(dirname "${0}")/.."
 
 dotfiles_root="$(readlink -f $(pwd -P))"
-home_dotfiles="${HOME}/.dotfiles"
+dotfiles_dest="${HOME}/.dotfiles"
 workspace="${HOME}/workspace"
 logfile="${HOME}/dotfile_install.log"
 
@@ -107,7 +107,7 @@ install_dotfiles () {
 	for src in $(find -H "${dotfiles_root}" -mindepth 2 -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -type f -not -iregex '.*\.script')
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
-		dst_dir="${home_dotfiles}/$(dirname "${rel_src}")"
+		dst_dir="${dotfiles_dest}/$(dirname "${rel_src}")"
 
 		if [[ ! -d "${dst_dir}" ]]; then
 			if (( $#dry_run )); then
@@ -145,7 +145,7 @@ get_theme () {
 	local ret
 	ret=0
 
-	themes_dir="${home_dotfiles/themes}"
+	themes_dir="${dotfiles_dest/themes}"
 	if (( $#dry_run )); then
 		success "dry-run: created ${themes_dir}"
 		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme"
@@ -160,7 +160,7 @@ get_theme () {
 	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme" -o "${themes_dir}/loki.zsh-theme" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
-	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${home_dotfiles}/git/git-patch.zsh" &>> ${logfile}
+	curl --url "https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git-patch.zsh" -o "${dotfiles_dest}/git/git-patch.zsh" &>> ${logfile}
 	ret=$(( $ret | $? ))
 
 	if [[ $ret == 0 ]]; then
@@ -260,7 +260,7 @@ link_file () {
 install_links () {
 	local overwrite_all=false backup_all=false skip_all=false
 
-	for src in $(find -H "${home_dotfiles}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.link')
+	for src in $(find -H "${dotfiles_dest}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.link')
 	do
 		dst="${HOME}/.$(basename "${src%.*}")"
 		link_file "${src}" "${dst}"
