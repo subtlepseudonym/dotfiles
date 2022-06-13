@@ -324,10 +324,11 @@ list_modules () {
 		action="yes"
 	fi
 
-	case "$action" in
-		n )
-			return 1;;
-		* )
+	case "${action:l}" in
+		n|no)
+			;;
+		*)
+			return 1
 			;;
 	esac
 }
