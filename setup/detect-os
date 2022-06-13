@@ -1,0 +1,27 @@
+#!/bin/bash
+
+case "${OSTYPE}" in
+	"linux-gnu"*)
+		if [[ -f "/etc/os-release" ]]; then
+			. /etc/os-release
+			echo "${ID}"
+		fi
+		;;
+	"darwin"*)
+		echo "darwin"
+		;;
+	"cygwin")
+		# posix compatibility layer or linux emulation for windows
+		echo "cygwin"
+		;;
+	"msys")
+		# lightweight shell and gnu utilities compiled for windows
+		echo "mingw"
+		;;
+	"freebsd"*)
+		;;
+	*)
+		echo "Unable to detect OS" >&2
+		exit 1
+		;;
+esac
