@@ -4,6 +4,7 @@ cd "$(dirname "${0}")/.."
 
 dotfiles_root="$(readlink -f $(pwd -P))"
 dotfiles_dest="${HOME}/.dotfiles"
+setup_root="${dotfiles_root}/setup"
 workspace="${HOME}/workspace"
 logfile="${HOME}/dotfile_install.log"
 
@@ -274,9 +275,10 @@ install_scripts () {
 		mkdir -p "${script_dir}"
 	fi
 
-	if [[ "$(uname -s)" != "Darwin" ]]; then
+	os="$(${setup_root}/detect-os)"
+	if [[ "${os}" != "darwin" ]]; then
 		exclude+="macos"
-		info "$(printf "excluding macos module for uname value '%s'" $(uname -s))"
+		info "$(printf "excluding macos module for detected os '%s'" ${os})"
 	fi
 
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
