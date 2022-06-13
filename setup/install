@@ -47,7 +47,7 @@ make_workspace () {
 		return
 	fi
 
-	if (( $#dry_run )); then
+	if (( ${#dry_run} )); then
 		success "dry-run: installed workspace"
 		return
 	fi
@@ -76,11 +76,11 @@ make_vim_dir () {
 	for src ('colors' 'tmp/backupdir' 'tmp/swpdir' 'tmp/undodir')
 	do
 		dir="${HOME}/.vim/${src}"
-		if (( $#dry_run )); then
+		if (( ${#dry_run} )); then
 			success "dry-run: mkdir ${dir}"
 		else
 			mkdir -vp "${dir}" &>> ${logfile}
-			(( $#verbose )) && success "created ${dir}"
+			(( ${#verbose} )) && success "created ${dir}"
 		fi
 	done
 
@@ -88,16 +88,16 @@ make_vim_dir () {
 	do
 		dir="${dotfiles_root}/vim/${src}"
 		if [[ -d "${dir}" ]]; then
-			if (( $#dry_run)); then
+			if (( ${#dry_run} )); then
 				success "dry-run: coped recursively ${dir}"
 			else
 				cp -r "${dir}" "${HOME}/.vim/${src}" &>> ${logfile}
-				(( $#verbose )) && success "copied recursively ${src}"
+				(( ${#verbose} )) && success "copied recursively ${src}"
 			fi
 		fi
 	done
 
-	if (( $#dry_run )); then
+	if (( ${#dry_run} )); then
 		success "dry-run: installed .vim directory"
 	else
 		success "installed .vim directory"
@@ -111,7 +111,7 @@ install_dotfiles () {
 		dst_dir="${dotfiles_dest}/$(dirname "${rel_src}")"
 
 		if [[ ! -d "${dst_dir}" ]]; then
-			if (( $#dry_run )); then
+			if (( ${#dry_run} )); then
 				success "dry-run: created ${dst_dir}"
 			else
 				mkdir -vp "${dst_dir}" &>> ${logfile}
@@ -120,19 +120,19 @@ install_dotfiles () {
 
 		dst="${dst_dir}/$(basename "${rel_src}")"
 
-		if (( $#dry_run )); then
+		if (( ${#dry_run} )); then
 			success "dry-run: copied ${src} to ${dst}"
 		else
 			cp "${src}" "${dst}"
 			if [[ $? == 0 ]]; then
-				(( $#verbose )) && success "copied ${src} to ${dst}"
+				(( ${#verbose} )) && success "copied ${src} to ${dst}"
 			else
 				error "could not copy ${src} to ${dst}"
 			fi
 		fi
 	done
 
-	if (( $#dry_run )); then
+	if (( ${#dry_run} )); then
 		success "dry-run: installed dotfiles"
 	else
 		success "installed dotfiles"
@@ -147,7 +147,7 @@ get_theme () {
 	ret=0
 
 	themes_dir="${dotfiles_dest/themes}"
-	if (( $#dry_run )); then
+	if (( ${#dry_run} )); then
 		success "dry-run: created ${themes_dir}"
 		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme"
 		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/git/git-patch.zsh"
@@ -177,26 +177,26 @@ link_file () {
 	local overwrite= backup= skip=
 	local action=
 
-	if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+	if [ -f "${dst}" -o -d "${dst}" -o -L "${dst}" ]
 	then
 
-		if [[ "$overwrite_all" == "false" ]] && [[ "$backup_all" == "false" ]] && [[ "$skip_all" == "false" ]]
+		if [[ "${overwrite_all}" == "false" ]] && [[ "${backup_all}" == "false" ]] && [[ "${skip_all}" == "false" ]]
 		then
 
-			local currentSrc="$(readlink $dst)"
+			local currentSrc="$(readlink ${dst})"
 
-			if [[ "$currentSrc" == "$src" ]]
+			if [[ "${currentSrc}" == "${src}" ]]
 			then
 
 				skip="true";
 
 			else
 
-				user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+				user "File already exists: ${dst} ($(basename "${src}")), what do you want to do?\n\
 				[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 				read action
 
-				case "$action" in
+				case "${action}" in
 					o )
 						overwrite="true";;
 					O )
@@ -221,39 +221,39 @@ link_file () {
 		backup=${backup:-$backup_all}
 		skip=${skip:-$skip_all}
 
-		if [[ "$overwrite" == "true" ]]
+		if [[ "${overwrite}" == "true" ]]
 		then
-			if (( $#dry_run )); then
-				success "dry-run: removed $dst"
+			if (( ${#dry_run} )); then
+				success "dry-run: removed ${dst}"
 			else
-				rm -rf "$dst"
-				success "removed $dst"
+				rm -rf "${dst}"
+				success "removed ${dst}"
 			fi
 		fi
 
-		if [[ "$backup" == "true" ]]
+		if [[ "${backup}" == "true" ]]
 		then
-			if (( $#dry_run)); then
-				success "dry-run: moved $dst to ${dst}.bak"
+			if (( ${#dry_run} )); then
+				success "dry-run: moved ${dst} to ${dst}.bak"
 			else
-				mv "$dst" "${dst}.bak"
-				success "moved $dst to ${dst}.bak"
+				mv "${dst}" "${dst}.bak"
+				success "moved ${dst} to ${dst}.bak"
 			fi
 		fi
 
-		if [[ "$skip" == "true" ]]
+		if [[ "${skip}" == "true" ]]
 		then
-			success "skipped $src"
+			success "skipped ${src}"
 		fi
 	fi
 
-	if [[ "$skip" != "true" ]]	# "false" or empty
+	if [[ "${skip}" != "true" ]]	# "false" or empty
 	then
-		if (( $#dry_run )); then
-			success "dry-run: linked $src to $dst"
+		if (( ${#dry_run} )); then
+			success "dry-run: linked ${src} to ${dst}"
 		else 
-			ln -s "$src" "$dst"
-			success "linked $src to $dst"
+			ln -s "${src}" "${dst}"
+			success "linked ${src} to ${dst}"
 		fi
 	fi
 }
@@ -284,11 +284,11 @@ install_scripts () {
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
-		if (( $#dry_run )); then
+		if (( ${#dry_run} )); then
 			success "dry-run: copied ${src} to ${dst}"
 		else
 			cp "${src}" "${dst}"
-			if [[ $? == 0 || $#dry_run ]]; then
+			if [[ $? == 0 || ${#dry_run} ]]; then
 				success "copied ${src} to ${dst}"
 			else
 				error "could not copy ${src} to ${dst}"
@@ -312,7 +312,7 @@ list_modules () {
 	info "The following modules will be installed:"
 	info
 	for module in ${(i)df_modules}; do
-		info "\t$module"
+		info "\t${module}"
 	done
 	info
 	info "( Use --exclude to remove modules from this list )"
