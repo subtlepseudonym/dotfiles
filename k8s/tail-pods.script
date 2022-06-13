@@ -1,19 +1,19 @@
 #!/usr/bin/env -S zsh
 
 levels=('error') # default error
-zparseopts -D -E -K -- \
+zparseopts -D -E -- \
 	-compact-output=compact_output \
 	h=help \
 	-help=help \
-	--namespace:=namespace \
-	--context:=context \
+	-namespace:=namespace \
+	-context:=context \
 	-since:=since \
 	-level+:=levels
 
 # prune flag names
 levels=("${levels[@]:#--level}")
 
-if [[ "${help+x}" ]]; then
+if [[ "${help}" != "" ]]; then
 	echo \
 'Tail multiple pods and parse their output for errors
 
@@ -21,7 +21,7 @@ Usage:
     usage: tail-pods [flags] <pod-regex>
 
 Flags:
-        --compact-output        Print JSON output on a single line
+        --compact-output        Print each outputted JSON object on a single line
         --context CONTEXT       Use kubectl context CONTEXT
     -h, --help                  Display this help text
         --level LEVEL           Display logs with LEVEL log level. To specify multiple log levels, repeat this option
@@ -47,8 +47,8 @@ stern \
 	${namespace} \
 	${context} \
 	${since} \
-	"$1" |
-jq \
+	"$1" \
+| jq \
 	${compact_output} \
 	--arg levels "${levels[@]}" \
 	'.message = (.message | fromjson) |
