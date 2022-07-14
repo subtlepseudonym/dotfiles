@@ -38,7 +38,8 @@ filetype plugin on " load plugin file based upon file type
 filetype indent on " load indent file based upon file type
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+autocmd FileType yaml,yml setlocal shiftwidth=2 tabstop=2
+autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2
 
 au FileType gitcommit setlocal tw=72
 
