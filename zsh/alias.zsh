@@ -1,10 +1,11 @@
 # Files
 [[ "$(uname)" == "Darwin" ]] && alias ls="ls -G"
-[[ "$(uname)" == "Linux" ]] && alias ls="ls --color"
+[[ "$(uname)" == "Linux"  ]] && alias ls="ls --color"
 alias la="ls -a"
 alias ll="ls -la"
 alias lh="ls -lah"
 alias rga="rg --files --hidden"
+alias cdw="cd ~/workspace"
 
 # Micro-scripts
 alias jq-prune="jq -R -r 'try fromjson'"
