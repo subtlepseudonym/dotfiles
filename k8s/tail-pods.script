@@ -49,7 +49,7 @@ stern \
 		{
 			containerName,
 			podName,
-			"ts": (.message.ts as $line | try strflocaltime("%FT%T%z") catch $line),
+			"ts": (.message.ts as $ts | try ($ts | floor | strflocaltime("%FT%T%z")) catch $ts),
 			message: .message
 		}
 	) catch $line'
