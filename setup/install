@@ -317,15 +317,17 @@ list_modules () {
 	info
 	info "( Use --exclude to remove modules from this list )"
 
+	action="yes"
 	if [[ -z "${unattended}" ]]; then
 		user "Continue? [Yn]"
 		read action
-	else
-		action="yes"
+		if [[ "${action}" == "" ]]; then
+			action="yes"
+		fi
 	fi
 
 	case "${action:l}" in
-		n|no)
+		y|yes)
 			;;
 		*)
 			return 1
