@@ -275,12 +275,6 @@ install_scripts () {
 		mkdir -p "${script_dir}"
 	fi
 
-	os="$(${setup_root}/detect-os)"
-	if [[ "${os}" != "darwin" ]]; then
-		exclude+="macos"
-		info "$(printf "excluding macos module for detected os '%s'" ${os})"
-	fi
-
 	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
@@ -298,8 +292,16 @@ install_scripts () {
 }
 
 list_modules () {
-	df_exclude=("setup" "zsh" ${exclude})
+	info "The following modules will be installed:"
 
+	# Exclude macos module if inapplicable
+	os="$(${setup_root}/detect-os)"
+	if [[ "${os}" != "darwin" ]]; then
+		exclude+="macos"
+		info "$(printf "(excluding macos module for detected os '%s')" ${os})"
+	fi
+
+	df_exclude=("setup" "zsh" ${exclude})
 	df_modules=("workspace" "loki-theme")
 	df_modules+=($(basename -a \
 		$(find "${dotfiles_root}" \
@@ -309,7 +311,6 @@ list_modules () {
 		)
 	))
 
-	info "The following modules will be installed:"
 	info
 	for module in ${(i)df_modules}; do
 		info "\t${module}"
