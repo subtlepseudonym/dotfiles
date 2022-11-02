@@ -1,6 +1,5 @@
 #!/usr/bin/env -S zsh
 
-levels=('error') # default error
 zparseopts -D -E -- \
 	-compact-output=compact_output \
 	h=help \
@@ -8,10 +7,6 @@ zparseopts -D -E -- \
 	-namespace:=namespace \
 	-context:=context \
 	-since:=since \
-	-level+:=levels
-
-# prune flag names
-levels=("${levels[@]:#--level}")
 
 if [[ "${help}" != "" ]]; then
 	echo \
@@ -24,7 +19,6 @@ Flags:
         --compact-output        Print each outputted JSON object on a single line
         --context CONTEXT       Use kubectl context CONTEXT
     -h, --help                  Display this help text
-        --level LEVEL           Display logs with LEVEL log level. To specify multiple log levels, repeat this option
         --namespace NAMESPACE   Use kubectl namespace NAMESPACE
         --since DURATION        Only display logs newer than DURATION ago
 '
@@ -50,12 +44,12 @@ stern \
 	"$1" \
 | jq \
 	${compact_output} \
-	--arg levels "${levels[@]}" \
-	'.message = (.message | fromjson) |
-	select(.message.level as $level | $levels | contains($level)) |
-	{
-		containerName,
-		podName,
-		"ts": (.message.ts | strflocaltime("%FT%T%z")),
-		"error": .message.error,
-	}'
+	'. as $line | try (
+		.message = (.message | fromjson) |
+		{
+			containerName,
+			podName,
+			"ts": (.message.ts as $ts | try ($ts | floor | strflocaltime("%FT%T%z")) catch $ts),
+			message: .message
+		}
+	) catch $line'
