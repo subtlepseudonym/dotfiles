@@ -275,7 +275,7 @@ install_scripts () {
 		mkdir -p "${script_dir}"
 	fi
 
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
+	for src in $(find -H "${dotfiles_root}" -maxdepth 2 -type f \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
 		if (( ${#dry_run} )); then
