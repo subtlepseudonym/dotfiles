@@ -5,6 +5,13 @@ export HISTFILE="${DOTFILES}/zsh/zsh_history"
 export HISTSIZE=2000
 export SAVEHIST=10000
 
+# default completions
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+zstyle ':completion:*' squeeze-slashes true
+zstyle :compinstall filename "${HOME}/.zshrc"
+autoload -Uz compinit && compinit
+
 # load config files
 for file in $DOTFILES/**/(*).zsh
 do
@@ -37,13 +44,6 @@ unset HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND
 # prevent duplicates in history
 setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
-
-# default completions
-zstyle ':completion:*' completer _complete _ignored _approximate
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
-zstyle :compinstall filename "${HOME}/.zshrc"
-
-autoload -Uz compinit && compinit
 
 # use custom word delimiters
 WORDCHARS='~!#$%^&*()_-=[]{}<>?'

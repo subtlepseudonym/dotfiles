@@ -1,0 +1,3 @@
+#!/usr/bin/env -S zsh
+
+docker compose -f ${COMPOSE_MANIFEST_PATH}/$@
