@@ -105,7 +105,12 @@ make_vim_dir () {
 }
 
 install_dotfiles () {
-	for src in $(find -H "${dotfiles_root}" -mindepth 2 -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -type f -not -iregex '.*\.script')
+	for src in $(find -H "${dotfiles_root}" \
+		-mindepth 2 -maxdepth 2 \
+		-type f \
+		\( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) \
+		-not -name '*.script' \
+	)
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
 		dst_dir="${dotfiles_dest}/$(dirname "${rel_src}")"
@@ -261,7 +266,11 @@ link_file () {
 install_links () {
 	local overwrite_all=false backup_all=false skip_all=false
 
-	for src in $(find -H "${dotfiles_dest}" -maxdepth 2 \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.link')
+	for src in $(find -H "${dotfiles_dest}" \
+		-maxdepth 2 \
+		\( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) \
+		-name '*.link' \
+	)
 	do
 		dst="${HOME}/.$(basename "${src%.*}")"
 		link_file "${src}" "${dst}"
@@ -275,7 +284,12 @@ install_scripts () {
 		mkdir -p "${script_dir}"
 	fi
 
-	for src in $(find -H "${dotfiles_root}" -maxdepth 2 -type f \( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) -name '*.script')
+	for src in $(find -H "${dotfiles_root}" \
+		-maxdepth 2 \
+		-type f \
+		\( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) \
+		-name '*.script' \
+	)
 	do
 		dst="${script_dir}/$(basename "${src%.script}")"
 		if (( ${#dry_run} )); then
@@ -304,10 +318,10 @@ list_modules () {
 	df_exclude=("setup" "zsh" ${exclude})
 	df_modules=("workspace" "loki-theme")
 	df_modules+=($(basename -a \
-		$(find "${dotfiles_root}" \
+		$(find -H "${dotfiles_root}" \
 			-mindepth 1 -maxdepth 1 \
+			-type d \
 			\( $(printf -- "-not -path */%s -and " ${df_exclude}) -true \) \
-			-and -type d
 		)
 	))
 
