@@ -5,6 +5,19 @@ export HISTFILE="${DOTFILES}/zsh/zsh_history"
 export HISTSIZE=2000
 export SAVEHIST=10000
 
+# add user binaries and scripts to path
+workspace="${HOME}/workspace"
+export path=(
+	"${workspace}/bin"
+	"${workspace}/script"
+	"${path[@]}"
+)
+export fpath=(
+	"${DOTFILES}/zsh/completion"
+	"${DOTFILES}/zsh/function"
+	"${fpath[@]}"
+)
+
 # default completions
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
@@ -22,14 +35,6 @@ done
 if [[ -a "${HOME}/.localrc" ]]; then
 	source "${HOME}/.localrc"
 fi
-
-# add user binaries and scripts to path
-workspace="${HOME}/workspace"
-export path=(
-	"${workspace}/bin"
-	"${workspace}/script"
-	"${path[@]}"
-)
 
 # bind zsh-history-substring-search functions to arrow keys
 if [[ "$terminfo" ]]; then

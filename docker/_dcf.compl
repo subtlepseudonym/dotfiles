@@ -1,0 +1,3 @@
+#compdef dcf
+
+_arguments "1:file:_path_files -W ${COMPOSE_MANIFEST_PATH}/ -g '*.yaml'"
