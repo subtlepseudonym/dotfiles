@@ -110,6 +110,7 @@ install_dotfiles () {
 		-type f \
 		\( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) \
 		-not -name '*.script' \
+		-not -name '*.compl' \
 	)
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
@@ -305,6 +306,36 @@ install_scripts () {
 	done
 }
 
+install_completions () {
+	completion_dir="${dotfiles_dest}/zsh/completion"
+	if [[ ${exclude[(ie)zsh]} -le ${#exclude} ]]; then
+		(( ${#verbose} )) && info "skipping completion script install"
+		return
+	fi
+
+	mkdir -p "${completion_dir}"
+
+	for src in $(find -H "${dotfiles_root}" \
+		-maxdepth 2 \
+		-type f \
+		\( $(printf -- "-not -path */%s/* -and " ${exclude}) -true \) \
+		-name '*.compl' \
+	)
+	do
+		dst="${completion_dir}/$(basename "${src%.compl}")"
+		if (( ${#dry_run} )); then
+			success "dry-run: copied ${src} to ${dst}"
+		else
+			cp "${src}" "${dst}"
+			if [[ $? == 0 || ${#dry_run} ]]; then
+				success "copied ${src} to ${dst}"
+			else
+				error "could not copy ${src} to ${dst}"
+			fi
+		fi
+	done
+}
+
 list_modules () {
 	info "The following modules will be installed:"
 
@@ -361,3 +392,4 @@ get_theme
 
 install_links
 install_scripts
+install_completions
