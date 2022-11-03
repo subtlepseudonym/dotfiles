@@ -12,7 +12,7 @@ zparseopts -D -E -- \
 	x+:=exclude_opts \
 	-exclude+:=exclude_opts \
 	v=verbose \
-	verbose=verbose \
+	-verbose=verbose \
 	-dry-run=dry_run \
 	-unattended=unattended
 
