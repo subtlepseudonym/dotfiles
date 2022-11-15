@@ -6,7 +6,7 @@ export HISTSIZE=2000
 export SAVEHIST=10000
 
 # add user binaries and scripts to path
-workspace="${HOME}/workspace"
+export workspace="${HOME}/workspace"
 export path=(
 	"${workspace}/bin"
 	"${workspace}/script"
