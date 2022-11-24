@@ -1,0 +1,3 @@
+#compdef git-update-all
+
+_arguments "1:file:_path_files -W ${WORKSPACE_GIT_PATH}/ -/"

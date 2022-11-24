@@ -1,0 +1,11 @@
+#!/usr/bin/env -S zsh
+
+if [[ "$1" == "" ]]; then 
+	echo "usage: $0 ORG"
+	exit 2
+fi
+
+for d in $(find "${WORKSPACE_GIT_PATH}/$1" -mindepth 1 -maxdepth 1 -type d); do
+	echo "${d}"
+	cd "${d}" && git pull --rebase=false --ff-only
+done
