@@ -1,5 +1,6 @@
 alias ga='git add'
 alias gc='git commit -v'
+alias gci='git check-ignore --verbose *'
 alias gcm='git checkout master'
 alias gco='git checkout'
 alias gd='git diff'
