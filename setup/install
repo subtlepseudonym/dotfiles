@@ -74,7 +74,7 @@ make_vim_dir () {
 	# skip if vim module is excluded
 	[[ ${exclude[(ie)vim]} -le ${#exclude} ]] && return
 
-	for src ('colors' 'tmp/backupdir' 'tmp/swpdir' 'tmp/undodir')
+	for src ('tmp/backupdir' 'tmp/swpdir' 'tmp/undodir')
 	do
 		dir="${HOME}/.vim/${src}"
 		if (( ${#dry_run} )); then
