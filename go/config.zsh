@@ -1,4 +1,4 @@
 export GOPATH="${HOME}/go"
-export GOPRIVATE="github.com/movableink"
+export GOROOT="/usr/local/go"
 
-path=("${GOPATH}/bin" "${path[@]}")
+path=("${GOROOT}/bin" "${GOPATH}/bin" "${path[@]}")
