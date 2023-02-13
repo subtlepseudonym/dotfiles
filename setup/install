@@ -43,7 +43,8 @@ error () {
 
 make_workspace () {
 	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
-		info "skipping workspace installation"
+		info "skipping workspace installation, using \$HOME"
+		workspace="${HOME}"
 		return
 	fi
 
@@ -281,7 +282,6 @@ install_links () {
 install_scripts () {
 	script_dir="${workspace}/script"
 	if [[ ${exclude[(ie)workspace]} -le ${#exclude} ]]; then
-		script_dir="${HOME}/script"
 		mkdir -p "${script_dir}"
 	fi
 
