@@ -153,7 +153,7 @@ get_theme () {
 	local ret
 	ret=0
 
-	themes_dir="${dotfiles_dest/themes}"
+	themes_dir="${dotfiles_dest}/themes"
 	if (( ${#dry_run} )); then
 		success "dry-run: created ${themes_dir}"
 		success "dry-run: downloaded https://raw.githubusercontent.com/subtlepseudonym/loki-theme/master/themes/loki.zsh-theme"
