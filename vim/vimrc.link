@@ -33,13 +33,16 @@ set smarttab " insert 'tabstop' number of spaces when the 'tab' key is pressed
 set ai " auto-indentation
 set si " smart indentation
 
+" Whitespace
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+
 " Filetype Settings
 filetype plugin on " load plugin file based upon file type
 filetype indent on " load indent file based upon file type
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 autocmd FileType yaml,yml setlocal shiftwidth=2 tabstop=2
-autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2
+autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2 expandtab
 
 au FileType gitcommit setlocal tw=72
 
