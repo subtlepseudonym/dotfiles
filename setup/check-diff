@@ -13,7 +13,7 @@ home_scripts="${HOME}/script"
 print_diff() {
 	if [[ -f "${2}" ]]; then
 		echo "${1#"${working_dir}"}"
-		git diff -- "${2}" "${1}"
+		git diff -- "${1}" "${2}"
 	else
 		echo "${1#"${working_dir}"} - not installed"
 	fi
