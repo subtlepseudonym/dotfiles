@@ -92,7 +92,7 @@ make_vim_dir () {
 			if (( ${#dry_run} )); then
 				success "dry-run: coped recursively ${dir}"
 			else
-				cp -r "${dir}" "${HOME}/.vim/${src}" &>> ${logfile}
+				cp -r "${dir}" "${HOME}/.vim/" &>> ${logfile}
 				(( ${#verbose} )) && success "copied recursively ${src}"
 			fi
 		fi
