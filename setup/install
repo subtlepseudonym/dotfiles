@@ -22,7 +22,7 @@ exclude_opts=("${exclude_opts[@]:#--exclude}")
 exclude=(
 	'*.git*'
 	'*setup*'
-	${exclude_opts}
+	'darwin'
 )
 
 info () {
@@ -115,7 +115,12 @@ install_dotfiles () {
 	)
 	do
 		rel_src="${src#"${dotfiles_root}/"}"
-		dst_dir="${dotfiles_dest}/$(dirname "${rel_src}")"
+		dir="$(dirname "${rel_src}")"
+		os="$(${setup_root}/detect-os)"
+		if [[ "$(dirname "${rel_src}")" == "${os}" ]]; then
+			dir="sys"
+		fi
+		dst_dir="${dotfiles_dest}/${dir}"
 
 		if [[ ! -d "${dst_dir}" ]]; then
 			if (( ${#dry_run} )); then
@@ -339,12 +344,10 @@ install_completions () {
 list_modules () {
 	info "The following modules will be installed:"
 
-	# Exclude macos module if inapplicable
+	# os-specific module inclusion
 	os="$(${setup_root}/detect-os)"
-	if [[ "${os}" != "darwin" ]]; then
-		exclude+="macos"
-		info "$(printf "(excluding macos module for detected os '%s')" ${os})"
-	fi
+	[[ -d "${dotfiles_root}/${os}" ]] && exclude=("${(@)exclude:#${os}}")
+	exclude+=(${exclude_opts[@]})
 
 	df_exclude=("setup" "zsh" ${exclude})
 	df_modules=("workspace" "loki-theme")
@@ -357,7 +360,7 @@ list_modules () {
 	))
 
 	info
-	for module in ${(i)df_modules}; do
+	for module in ${(oi)df_modules}; do
 		info "\t${module}"
 	done
 	info
