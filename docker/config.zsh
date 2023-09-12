@@ -4,4 +4,7 @@ mkdir -p "${MANIFEST_COMPOSE_PATH}"
 
 compdef _dcf dcf
 
-path=("${HOME}/.rd/bin" "${path[@]}")
+path=(
+	"${HOME}/.rd/bin"
+	"${path[@]}"
+)

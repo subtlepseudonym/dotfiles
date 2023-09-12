@@ -38,7 +38,7 @@ do
 	source "${file}"
 done
 
-# load config files
+# load non-system config files
 for file in ${DOTFILES}/^sys**/(*).zsh
 do
 	source "${file}"
