@@ -21,6 +21,7 @@ case "${OSTYPE}" in
 	"freebsd"*)
 		;;
 	*)
+		echo "unknown"
 		echo "Unable to detect OS" >&2
 		exit 1
 		;;
