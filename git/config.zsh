@@ -2,4 +2,7 @@
 export WORKSPACE_GIT_PATH="${workspace}/git"
 
 zstyle ':completion:*:*:git:*' script "${DOTFILES}/git/git-completion.bash"
-fpath=("${DOTFILES}/git" ${fpath})
+fpath=(
+	"${DOTFILES}/git"
+	${fpath}
+)
