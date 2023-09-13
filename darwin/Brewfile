@@ -1,0 +1,9 @@
+# add brew repos
+# can untap homebrew/core and homebrew/cask since v4.0
+tap "homebrew/services"
+
+# general utilities
+brew "jq"
+brew "pyenv"
+brew "rbenv"
+brew "ripgrep"
