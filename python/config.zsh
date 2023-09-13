@@ -1,18 +1,10 @@
-PYENV_ROOT="${HOME}/.pyenv"
-
-if [[ -f "$(command -v pyenv)" || -f "${PYENV_ROOT}/bin/pyenv" ]]; then
-	if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
-		path=(
-			"${PYENV_ROOT}/bin"
-			"${PYENV_ROOT}/shims"
-			"${path[@]}"
-		)
-	fi
-
-	export PYENV_ROOT
+# pyenv may be installed in ~/.pyenv/bin
+[[ -d "${HOME}/.pyenv/bin" ]] && path=("${HOME}/.pyenv/bin" "${path[@]}")
+if [[ -f "$(command -v pyenv)" ]]; then
+	path=("${HOME}/.pyenv/shims" "${path[@]}")
 	eval "$(pyenv init -)"
 fi
 
-if [[ -f "${PYENV_ROOT}/plugins/pyenv-virtualenv" ]]; then
+if [[ -f "${HOME}/.pyenv/plugins/pyenv-virtualenv" ]]; then
 	eval "$(pyenv virtualenv-init -)"
 fi

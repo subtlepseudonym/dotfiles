@@ -1,4 +1,4 @@
-# rbenv may be in ~/.rbenv/bin or /opt/homebrew/bin
+# rbenv may be installed in ~/.rbenv/bin
 [[ -d "${HOME}/.rbenv/bin" ]] && path=("${HOME}/.rbenv/bin" "${path[@]}")
 [[ -f "$(command -v rbenv)" ]] && eval "$(rbenv init - zsh)"
 
