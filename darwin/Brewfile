@@ -7,3 +7,5 @@ brew "jq"
 brew "pyenv"
 brew "rbenv"
 brew "ripgrep"
+
+cask "syncthing"
