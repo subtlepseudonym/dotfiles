@@ -3,9 +3,14 @@
 tap "homebrew/services"
 
 # general utilities
+brew "golang"
 brew "jq"
 brew "pyenv"
 brew "rbenv"
 brew "ripgrep"
 
+cask "brave-browser"
+cask "iterm2"
+cask "rectangle"
+cask "slack"
 cask "syncthing"
