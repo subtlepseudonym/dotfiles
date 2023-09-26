@@ -17,3 +17,5 @@ alias sl=swaplist
 alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
 alias udate="date +%s"
 alias tvsort="sed -e 's/^\(.*\)\(s[0-9]\+e[0-9]\+\)\(.*\)/\2#\3#\1/' | sort | sed -e 's/^\(.*\)#\(.*\)#\(.*\)/\3\1\2/'"
+alias whitespace="sed 's/ /·/g;s/\t/￫/g;s/\r/§/g;s/$/¶/g'"
+alias ffprobe="ffprobe -hide_banner"
