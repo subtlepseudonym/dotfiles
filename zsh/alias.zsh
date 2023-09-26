@@ -16,4 +16,4 @@ alias swaplist="ls '${HOME}/.vim/tmp/swpdir' | sed 's!.*/!!; s!%!/!g' | sort"
 alias sl=swaplist
 alias trim="awk '{ gsub(/^[ \t]+|[ \t]+$/, \"\"); print }'"
 alias udate="date +%s"
-alias tvsort="sed -e 's/^\(.*\)\(s[0-9]*e[0-9]*\)\(.*\)/\2#\1#\3/' | sort -n | sed -e 's/^\(.*\)#\(.*\)#\(.*\)/\2\1\3/'"
+alias tvsort="sed -e 's/^\(.*\)\(s[0-9]\+e[0-9]\+\)\(.*\)/\2#\3#\1/' | sort | sed -e 's/^\(.*\)#\(.*\)#\(.*\)/\3\1\2/'"
