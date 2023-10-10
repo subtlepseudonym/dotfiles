@@ -1,7 +1,7 @@
 alias ga='git add'
 alias gc='git commit -v'
 alias gci='git check-ignore --verbose *'
-alias gcm='git checkout master'
+alias gcm='git checkout "$(git branch --list main master | rev | cut -f1 -d" " | rev | tail -n1)"'
 alias gco='git checkout'
 alias gd='git diff'
 alias gl='git pull'
