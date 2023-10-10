@@ -27,11 +27,6 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle :compinstall filename "${HOME}/.zshrc"
 autoload -Uz compinit && compinit
 
-# local environment variables / secrets
-if [[ -a "${HOME}/.localrc" ]]; then
-	source "${HOME}/.localrc"
-fi
-
 # load system config files first
 for file in ${DOTFILES}/sys/(*).zsh
 do
@@ -43,6 +38,11 @@ for file in ${DOTFILES}/^sys**/(*).zsh
 do
 	source "${file}"
 done
+
+# local environment variables / secrets
+if [[ -a "${HOME}/.localrc" ]]; then
+	source "${HOME}/.localrc"
+fi
 
 # bind zsh-history-substring-search functions to arrow keys
 if [[ "$terminfo" ]]; then
