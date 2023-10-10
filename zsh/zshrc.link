@@ -28,10 +28,12 @@ zstyle :compinstall filename "${HOME}/.zshrc"
 autoload -Uz compinit && compinit
 
 # load system config files first
-for file in ${DOTFILES}/sys/(*).zsh
-do
-	source "${file}"
-done
+if [ -d "${DOTFILES}/sys" ]; then
+	for file in ${DOTFILES}/sys/(*).zsh
+	do
+		source "${file}"
+	done
+fi
 
 # load non-system config files
 for file in ${DOTFILES}/^sys**/(*).zsh
