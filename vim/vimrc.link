@@ -41,6 +41,7 @@ filetype plugin on " load plugin file based upon file type
 filetype indent on " load indent file based upon file type
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+au! BufNewFile,BufReadPost *.sqlz set filetype=sql
 autocmd FileType yaml,yml setlocal shiftwidth=2 tabstop=2
 autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType sql,sqlz setlocal shiftwidth=2 tabstop=2 expandtab
