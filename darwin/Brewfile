@@ -4,6 +4,7 @@ tap "homebrew/services"
 
 # general utilities
 brew "golang"
+brew "gawk"
 brew "jq"
 brew "pyenv"
 brew "pyenv-virtualenv"
@@ -11,6 +12,7 @@ brew "rbenv"
 brew "ripgrep"
 
 cask "brave-browser"
+cask "caffeine"
 cask "iterm2"
 cask "rectangle"
 cask "signal"
