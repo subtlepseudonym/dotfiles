@@ -1,5 +1,6 @@
 # add brew repos
 # can untap homebrew/core and homebrew/cask since v4.0
+tap "hashicorp/tap"
 tap "homebrew/services"
 
 # general utilities
@@ -11,10 +12,13 @@ brew "pyenv-virtualenv"
 brew "rbenv"
 brew "ripgrep"
 
+brew "hashicorp/tap/terraform"
+
 cask "brave-browser"
 cask "caffeine"
 cask "iterm2"
 cask "rectangle"
+cask "rancher"
 cask "signal"
 cask "slack"
 cask "spotify"
