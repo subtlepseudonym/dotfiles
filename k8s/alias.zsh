@@ -1,5 +1,7 @@
+alias kg='kubectl get'
 alias kga='kubectl get all'
 alias kgcm='kubectl get configmap'
 alias kgp='kubectl get pods'
 alias kgpa='kubectl get pods --all'
+alias kn='kubectl config set-context --current --namespace '
 alias kpf='kubectl port-forward'
