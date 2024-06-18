@@ -6,6 +6,7 @@ tap "homebrew/services"
 # general utilities
 brew "golang"
 brew "gawk"
+brew "jnv"
 brew "jq"
 brew "pyenv"
 brew "pyenv-virtualenv"
