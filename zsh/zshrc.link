@@ -4,8 +4,8 @@ export DOTFILES="${HOME}/.dotfiles"
 export HISTFILE="${DOTFILES}/zsh/zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
-setopt append_history  # append, don't overwrite history
-setopt inc_append_history_time  # append after cmd exits, not when session exits
+setopt APPEND_HISTORY           # append, don't overwrite history
+setopt INC_APPEND_HISTORY_TIME  # append after cmd exits, not when session exits
 
 # add user binaries and scripts to path
 export workspace="${HOME}/workspace"
@@ -21,7 +21,7 @@ export fpath=(
 )
 
 # default completions
-setopt extended_glob  # treat #,~,^ as part of filename patterns
+setopt EXTENDED_GLOB  # treat #,~,^ as part of filename patterns
 zstyle ':completion:*' completer _complete _ignored _approximate
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle ':completion:*' squeeze-slashes true
