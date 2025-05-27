@@ -1,2 +1,2 @@
-export VISUAL="/usr/bin/vim"
-export EDITOR="/usr/bin/vim"
+export VISUAL="$(command -v vim)"
+export EDITOR="$(command -v vim)"
