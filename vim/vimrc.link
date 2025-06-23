@@ -81,4 +81,7 @@ try
 catch
 endtry
 
-source ${HOME}/.vim/local.vim
+try
+	source ${HOME}/.vim/local.vim
+catch
+endtry
