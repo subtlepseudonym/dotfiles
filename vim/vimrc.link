@@ -24,14 +24,15 @@ set incsearch " match partial hits with incremental search
 
 " Performance
 set lazyredraw
-set tm=500 " number of milliseconds waited for a mapped key sequence to complete
+set timeoutlen=500 " number of milliseconds waited for a mapped key sequence to complete
+set regexpengine=0 " 0=auto 1=old engine 2=NFA engine
 
 " Indentation
 set shiftwidth=4 " when shifting, indent using four spaces
 set tabstop=4 " indent using four spaces
 set smarttab " insert 'tabstop' number of spaces when the 'tab' key is pressed
-set ai " auto-indentation
-set si " smart indentation
+set autoindent " auto-indentation
+set smartindent " smart indentation
 
 " Whitespace
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
