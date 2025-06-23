@@ -80,3 +80,5 @@ try
     set undofile
 catch
 endtry
+
+source ${HOME}/.vim/local.vim
