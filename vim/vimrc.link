@@ -45,11 +45,12 @@ au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
 au! BufNewFile,BufReadPost *.tmpl set filetype=html
 au! BufNewFile,BufReadPost *.sqlz set filetype=sql
 au! BufNewFile,BufReadPost *.{tf,tfvars} set filetype=terraform
+au! BufNewFile,BufReadPost *.{js,ts} set filetype=javascript
 autocmd FileType yaml,yml setlocal shiftwidth=2 tabstop=2
 autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType sql setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType terraform setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType js,ts setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd Syntax css setlocal shiftwidth=2 tabstop=2 expandtab
 
 au FileType gitcommit setlocal tw=72
