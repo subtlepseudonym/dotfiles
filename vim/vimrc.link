@@ -49,6 +49,7 @@ autocmd FileType yaml,yml setlocal shiftwidth=2 tabstop=2
 autocmd FileType html,htm setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType sql setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType terraform setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType js,ts setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd Syntax css setlocal shiftwidth=2 tabstop=2 expandtab
 
 au FileType gitcommit setlocal tw=72
